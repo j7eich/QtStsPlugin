@@ -15,3 +15,5 @@ namespace QtSts {
 	Q_DECLARE_FLAGS(TrainEvents, TrainEvent)
 
 }
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(QtSts::TrainEvents)
