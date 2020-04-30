@@ -3,27 +3,23 @@
 #include "qtstsplugin_global.h"
 #include <QObject>
 #include <QString>
+#include "TrainEventFlags.h"
 
-class QTSTSPLUGIN_EXPORT QtStsPlugin : public QObject
-{
-	Q_OBJECT
+namespace QtSts {
 
-public:
-	enum TrainEvent
+	class QTSTSPLUGIN_EXPORT Plugin : public QObject
 	{
-		NONE      = 0b0000,
-		INBOUND   = 0b0001,
-		ARRIVAL   = 0b0010,
-		DEPARTURE = 0b0100,
-		OUTBOUND  = 0b1000
-	};
-	Q_DECLARE_FLAGS(TrainEvents, TrainEvent)
-	Q_FLAG(TrainEvents)
+		Q_OBJECT
 
-	QtStsPlugin(const QString& pluginName,
-		const QString& pluginAuthor,
-		const QString& pluginVersion,
-		const QString& pluginDescription,
-		QObject* parent = Q_NULLPTR);
-	~QtStsPlugin() override;
-};
+	public:
+		Q_FLAG(TrainEvents)
+
+		Plugin(const QString& pluginName,
+			const QString& pluginAuthor,
+			const QString& pluginVersion,
+			const QString& pluginDescription,
+			QObject* parent = Q_NULLPTR);
+		~Plugin() override;
+	};
+
+}

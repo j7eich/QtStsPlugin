@@ -1,6 +1,6 @@
 #include "QtStsPlugin.h"
 
-QtStsPlugin::QtStsPlugin(const QString& sName,
+QtSts::Plugin::Plugin(const QString& sName,
 	const QString& sAuthor,
 	const QString& sVersion,
 	const QString& sText,
@@ -9,4 +9,4 @@ QtStsPlugin::QtStsPlugin(const QString& sName,
 {
 }
 
-QtStsPlugin::~QtStsPlugin() = default;
+QtSts::Plugin::~Plugin() = default;

@@ -24,14 +24,23 @@
     <ClCompile Include="QtStsPlugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QtStsPluginCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="qtstsplugin_global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TrainEventFlags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtStsPlugin.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QtStsPluginCore.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

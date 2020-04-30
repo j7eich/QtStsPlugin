@@ -83,9 +83,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="QtStsPlugin.cpp" />
+    <ClCompile Include="QtStsPluginCore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TrainEventFlags.h" />
     <QtMoc Include="QtStsPlugin.h" />
+    <QtMoc Include="QtStsPluginCore.h" />
     <ClInclude Include="qtstsplugin_global.h" />
   </ItemGroup>
   <ItemGroup>
