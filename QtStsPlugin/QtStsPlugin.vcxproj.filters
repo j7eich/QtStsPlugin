@@ -21,10 +21,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="QtStsPlugin.cpp">
+    <ClCompile Include="Plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QtStsPluginCore.cpp">
+    <ClCompile Include="PluginCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -37,10 +37,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="QtStsPlugin.h">
+    <QtMoc Include="Plugin.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="QtStsPluginCore.h">
+    <QtMoc Include="PluginCore.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

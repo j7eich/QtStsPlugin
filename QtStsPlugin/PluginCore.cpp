@@ -1,4 +1,4 @@
-#include "QtStsPluginCore.h"
+#include "PluginCore.h"
 
 QtSts::PluginCore::PluginCore(QObject *parent)
 	: QObject(parent)

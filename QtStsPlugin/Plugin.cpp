@@ -1,4 +1,4 @@
-#include "QtStsPlugin.h"
+#include "Plugin.h"
 
 QtSts::Plugin::Plugin(const QString& sName,
 	const QString& sAuthor,
