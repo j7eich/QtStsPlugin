@@ -16,32 +16,35 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *****************************************************************************/
 #pragma once
 
-#include <QMainWindow>
+#include <QDialog>
+#include <QString>
+#include <QAbstractSocket>
 #include <memory>
 
 namespace Ui {
-	class QtStsPluginTestGuiClass;
+	class DialogConnection;
 }
 
-namespace QtSts {
-	class Plugin;
-}
-
-class QtStsPluginTestGui : public QMainWindow
+class DialogConnection : public QDialog
 {
 	Q_OBJECT
+	Q_PROPERTY(QString hostname READ hostname WRITE setHostname)
+	Q_PROPERTY(unsigned short port READ port WRITE setPort)
+	Q_PROPERTY(QAbstractSocket::NetworkLayerProtocol protocol READ protocol WRITE setProtocol)
 
 public:
-	QtStsPluginTestGui(QWidget* parent = nullptr);
-	~QtStsPluginTestGui() override;
+	DialogConnection(QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
+	~DialogConnection() override;
+
+	QString hostname() const;
+	unsigned short port() const;
+	QAbstractSocket::NetworkLayerProtocol protocol() const;
 
 public Q_SLOTS:
-	void on_actionQuit_triggered();
-	void on_actionInstantiate_triggered();
-	void on_actionDestroy_triggered();
-	void on_actionSetConnection_triggered();
+	void setHostname(const QString& hostname);
+	void setPort(unsigned short port);
+	void setProtocol(QAbstractSocket::NetworkLayerProtocol protocol);
 
 private:
-	std::unique_ptr<Ui::QtStsPluginTestGuiClass> ui;
-	QtSts::Plugin* m_plugin;
+	std::unique_ptr<Ui::DialogConnection> ui;
 };

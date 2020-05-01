@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogPlugin</class>
- <widget class="QDialog" name="DialogPlugin">
+ <class>DialogConnection</class>
+ <widget class="QDialog" name="DialogConnection">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,57 +11,73 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Plugin Parameters</string>
+   <string>Connection Parameters</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Instantiate QtSts::Plugin with these parameters.</string>
+      <string>Connection to StellwerkSimulator</string>
      </property>
     </widget>
    </item>
    <item>
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="labelName">
+      <widget class="QLabel" name="hostnameLabel">
        <property name="text">
-        <string>Name</string>
+        <string>Host name</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="editName"/>
+      <widget class="QLineEdit" name="hostnameEdit"/>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="labelAuthor">
+      <widget class="QLabel" name="tcpPortLabel">
        <property name="text">
-        <string>Author</string>
+        <string>TCP port</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="editAuthor"/>
+      <widget class="QSpinBox" name="tcpPortSpin">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>65535</number>
+       </property>
+       <property name="value">
+        <number>3691</number>
+       </property>
+      </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="labelVersion">
+      <widget class="QLabel" name="ipProtocolLabel">
        <property name="text">
-        <string>Version</string>
+        <string>IP Protocol</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="editVersion"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="labelDescription">
-       <property name="text">
-        <string>Description</string>
-       </property>
+      <widget class="QComboBox" name="ipProtocolCombo">
+       <item>
+        <property name="text">
+         <string>automatic</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string notr="true">IPv6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string notr="true">IPv4</string>
+        </property>
+       </item>
       </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="editDescription"/>
      </item>
     </layout>
    </item>
@@ -73,7 +89,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>14</height>
+       <height>41</height>
       </size>
      </property>
     </spacer>
@@ -95,7 +111,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>DialogPlugin</receiver>
+   <receiver>DialogConnection</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -111,7 +127,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>DialogPlugin</receiver>
+   <receiver>DialogConnection</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

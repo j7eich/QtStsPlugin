@@ -3,7 +3,7 @@
 
 DialogPlugin::DialogPlugin(QWidget* parent, Qt::WindowFlags flags)
 	: QDialog(parent, flags)
-	, ui(new Ui::DialogPlugin())
+	, ui(new Ui::DialogPlugin)
 {
 	ui->setupUi(this);
 }

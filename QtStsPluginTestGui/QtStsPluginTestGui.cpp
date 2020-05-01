@@ -15,19 +15,26 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *****************************************************************************/
 #include "QtStsPluginTestGui.h"
+#include "ui_QtStsPluginTestGui.h"
+
 #include <QApplication>
 
 #include "../QtStsPlugin/Plugin.h"
 #include "DialogPlugin.h"
+#include "DialogConnection.h"
 
 QtStsPluginTestGui::QtStsPluginTestGui(QWidget *parent)
 	: QMainWindow(parent)
-	, ui()
+	, ui(new Ui::QtStsPluginTestGuiClass)
 	, m_plugin(nullptr)
 {
-	ui.setupUi(this);
-	ui.actionDestroy->setEnabled(false);
+	ui->setupUi(this);
+	ui->actionDestroy->setEnabled(false);
+	ui->actionSetConnection->setEnabled(false);
+	ui->actionConnect->setEnabled(false);
 }
+
+QtStsPluginTestGui::~QtStsPluginTestGui() = default;
 
 void QtStsPluginTestGui::on_actionQuit_triggered()
 {
@@ -48,17 +55,45 @@ void QtStsPluginTestGui::on_actionInstantiate_triggered()
 
 	if (result == QDialog::Accepted)
 	{
-		ui.actionInstantiate->setEnabled(false);
+		ui->actionInstantiate->setEnabled(false);
 		m_plugin = new QtSts::Plugin(dialog.name(), dialog.author(), dialog.version(), dialog.description(), this);
-		ui.actionDestroy->setEnabled(true);
+		auto connection = QObject::connect(ui->actionConnect, SIGNAL(triggered(bool)), m_plugin, SLOT(setConnected(bool)));
+		Q_ASSERT(connection);
+		ui->actionDestroy->setEnabled(true);
+		ui->actionSetConnection->setEnabled(true);
+		ui->actionConnect->setEnabled(true);
 	}
 }
 
 void QtStsPluginTestGui::on_actionDestroy_triggered()
 {
 	Q_ASSERT(m_plugin != nullptr);
-	ui.actionInstantiate->setEnabled(true);
+
 	delete m_plugin;
 	m_plugin = nullptr;
-	ui.actionDestroy->setEnabled(false);
+
+	ui->actionInstantiate->setEnabled(true); 
+	ui->actionDestroy->setEnabled(false);
+	ui->actionSetConnection->setEnabled(false);
+	ui->actionConnect->setEnabled(false);
+	ui->actionConnect->setChecked(false);
+}
+
+void QtStsPluginTestGui::on_actionSetConnection_triggered()
+{
+	Q_ASSERT(m_plugin != nullptr);
+
+	DialogConnection dialog;
+	dialog.setHostname(m_plugin->stsHostname());
+	dialog.setPort(m_plugin->stsPort());
+	dialog.setProtocol(m_plugin->ipProtocol());
+
+	const int result = dialog.exec();
+
+	if (result == QDialog::Accepted)
+	{
+		m_plugin->setStsHostname(dialog.hostname());
+		m_plugin->setStsPort(dialog.port());
+		m_plugin->setIpProtocol(dialog.protocol());
+	}
 }
