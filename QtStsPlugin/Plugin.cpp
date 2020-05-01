@@ -53,7 +53,7 @@ QtSts::Plugin::~Plugin()
 
 bool QtSts::Plugin::isConnected() const
 {
-	return false;
+	return m_core->isRegistered();
 }
 
 void QtSts::Plugin::setStsHostname(const QString& hostname)
