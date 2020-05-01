@@ -40,9 +40,23 @@ QtSts::Plugin::Plugin(const QString& pluginName,
 
 	m_core = new PluginCore(pluginName, pluginAuthor, pluginVersion, pluginText, this);
 	QObject::connect(m_core, SIGNAL(sendToSts(const QByteArray&)), this, SLOT(sendToSocket(const QByteArray&)));
-	QObject::connect(m_core, SIGNAL(timeReceived(int, int)), this, SIGNAL(timeReceived(int, int)));
-	QObject::connect(m_core, SIGNAL(statusMessageReceived(int, const QString&)), this, SIGNAL(statusMessageReceived(int, const QString&)));
-	QObject::connect(m_core, SIGNAL(signalBoxInfoReceived(int, int, const QString&)), this, SIGNAL(signalBoxInfoReceived(int, int, const QString&)));
+
+	auto metaCore = m_core->metaObject();
+	auto metaThis = metaObject();
+
+	for (int i = metaCore->methodOffset(); i < metaCore->methodCount(); ++i)
+	{
+		auto coreMethod = metaCore->method(i);
+		if (coreMethod.methodType() == QMetaMethod::Signal)
+		{
+			int signalIndex = metaThis->indexOfSignal(coreMethod.methodSignature());
+			if (signalIndex >= 0)
+			{
+				auto connection = QObject::connect(m_core, coreMethod, this, metaThis->method(signalIndex));
+				Q_ASSERT(connection);
+			}
+		}
+	}
 }
 
 QtSts::Plugin::~Plugin()
