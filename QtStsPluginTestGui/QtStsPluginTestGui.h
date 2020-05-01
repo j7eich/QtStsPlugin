@@ -40,10 +40,15 @@ public Q_SLOTS:
 	void on_actionInstantiate_triggered();
 	void on_actionDestroy_triggered();
 	void on_actionSetConnection_triggered();
+	void on_actionSimTime_triggered();
+	void on_actionSignalBoxInfo_triggered();
+	void on_actionHeat_triggered();
 	void communicationFromSts(const QByteArray& data);
 	void communicationToSts(const QByteArray& data);
 
 private:
+	void addToCommunicationLog(const QByteArray& data, bool outgoing, bool scrollToEnd);
+
 	std::unique_ptr<Ui::QtStsPluginTestGuiClass> ui;
 	QtSts::Plugin* m_plugin;
 };

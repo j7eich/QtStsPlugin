@@ -57,12 +57,14 @@ namespace QtSts {
 		void stsDisconnect() { setConnected(false); }
 		void requestSimTime();
 		void requestSignalBoxInfo();
+		void requestHeat();
 
 	Q_SIGNALS:
 		void signalConnected(bool connected);
 		void statusMessageReceived(int code, const QString& text);
 		void timeReceived(int offset, int rtt);
 		void signalBoxInfoReceived(int simbuild, int aid, const QString& name);
+		void heatReceived(int heat);
 		void dataFromSts(const QByteArray& data);
 		void dataToSts(const QByteArray& data);
 

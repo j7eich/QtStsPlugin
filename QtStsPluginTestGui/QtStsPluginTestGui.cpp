@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "ui_QtStsPluginTestGui.h"
 
 #include <QApplication>
+#include <QScrollBar>
 
 #include "../QtStsPlugin/Plugin.h"
 #include "DialogPlugin.h"
@@ -32,6 +33,7 @@ QtStsPluginTestGui::QtStsPluginTestGui(QWidget *parent)
 	ui->actionDestroy->setEnabled(false);
 	ui->actionSetConnection->setEnabled(false);
 	ui->actionConnect->setEnabled(false);
+	ui->menuRequest->setEnabled(false);
 }
 
 QtStsPluginTestGui::~QtStsPluginTestGui() = default;
@@ -66,6 +68,7 @@ void QtStsPluginTestGui::on_actionInstantiate_triggered()
 		ui->actionDestroy->setEnabled(true);
 		ui->actionSetConnection->setEnabled(true);
 		ui->actionConnect->setEnabled(true);
+		ui->menuRequest->setEnabled(true);
 	}
 }
 
@@ -81,6 +84,7 @@ void QtStsPluginTestGui::on_actionDestroy_triggered()
 	ui->actionSetConnection->setEnabled(false);
 	ui->actionConnect->setEnabled(false);
 	ui->actionConnect->setChecked(false);
+	ui->menuRequest->setEnabled(false);
 }
 
 void QtStsPluginTestGui::on_actionSetConnection_triggered()
@@ -102,16 +106,49 @@ void QtStsPluginTestGui::on_actionSetConnection_triggered()
 	}
 }
 
+void QtStsPluginTestGui::on_actionSimTime_triggered()
+{
+	Q_ASSERT(m_plugin != nullptr);
+
+	m_plugin->requestSimTime();
+}
+
+void QtStsPluginTestGui::on_actionSignalBoxInfo_triggered()
+{
+	Q_ASSERT(m_plugin != nullptr);
+
+	m_plugin->requestSignalBoxInfo();
+}
+
+void QtStsPluginTestGui::on_actionHeat_triggered()
+{
+	m_plugin->requestHeat();
+}
+
 void QtStsPluginTestGui::communicationFromSts(const QByteArray& data)
 {
-	QString sIn = QString(data).toHtmlEscaped();
-	sIn = QStringLiteral("<p style=\"color:red;\">%1</p><br />").arg(sIn);
-	ui->communicationText->insertHtml(sIn);
+	addToCommunicationLog(data, false, true);
 }
 
 void QtStsPluginTestGui::communicationToSts(const QByteArray& data)
 {
-	QString sOut = QString(data).toHtmlEscaped();
-	sOut = QStringLiteral("<p style=\"color:blue;\">%1</p><br />").arg(sOut);
-	ui->communicationText->insertHtml(sOut);
+	addToCommunicationLog(data, true, true);
+}
+
+void QtStsPluginTestGui::addToCommunicationLog(const QByteArray& data, bool outgoing, bool scrollToEnd)
+{
+	QString sHtml(QStringLiteral("<p style=\"color:"));
+	sHtml.append(outgoing ? QStringLiteral("blue") : QStringLiteral("red"));
+	sHtml.append(QStringLiteral("\">")).append(QString(data).toHtmlEscaped());
+	sHtml.append(QStringLiteral("</p><br />"));
+	
+	auto cursor = ui->communicationText->textCursor();
+	cursor.movePosition(QTextCursor::End);
+	cursor.insertHtml(sHtml);
+
+	if (scrollToEnd)
+	{
+		auto scrollBar = ui->communicationText->verticalScrollBar();
+		scrollBar->setValue(scrollBar->maximum());
+	}
 }

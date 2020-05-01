@@ -86,6 +86,9 @@
     <property name="title">
      <string>&amp;Request</string>
     </property>
+    <addaction name="actionSimTime"/>
+    <addaction name="actionSignalBoxInfo"/>
+    <addaction name="actionHeat"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -155,6 +158,21 @@
   <action name="actionAboutQt">
    <property name="text">
     <string>About &amp;Qt...</string>
+   </property>
+  </action>
+  <action name="actionSimTime">
+   <property name="text">
+    <string>Sim &amp;Time</string>
+   </property>
+  </action>
+  <action name="actionSignalBoxInfo">
+   <property name="text">
+    <string>Signal &amp;Box Info</string>
+   </property>
+  </action>
+  <action name="actionHeat">
+   <property name="text">
+    <string>&amp;Heat</string>
    </property>
   </action>
  </widget>

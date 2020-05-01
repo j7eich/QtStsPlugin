@@ -109,6 +109,11 @@ void QtSts::Plugin::requestSignalBoxInfo()
 	m_core->requestSignalBoxInfo();
 }
 
+void QtSts::Plugin::requestHeat()
+{
+	m_core->requestHeat();
+}
+
 void QtSts::Plugin::on_readyRead()
 {
 	const QByteArray buffer(m_socket->readAll());

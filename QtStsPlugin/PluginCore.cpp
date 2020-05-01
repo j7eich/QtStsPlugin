@@ -23,6 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace QtSts {
 	static const QString stsANLAGENINFO(QStringLiteral("anlageninfo"));
+	static const QString stsHITZE(QStringLiteral("hitze"));
 	static const QString stsNAME(QStringLiteral("name"));
 	static const QString stsSENDER(QStringLiteral("sender"));
 	static const QString stsSIMZEIT(QStringLiteral("simzeit"));
@@ -73,6 +74,11 @@ void QtSts::PluginCore::requestSimTime()
 void QtSts::PluginCore::requestSignalBoxInfo()
 {
 	sendSimpleCommand(stsANLAGENINFO);
+}
+
+void QtSts::PluginCore::requestHeat()
+{
+	sendSimpleCommand(stsHITZE);
 }
 
 void QtSts::PluginCore::receivedFromSts(const QByteArray& data)
@@ -143,6 +149,10 @@ void QtSts::PluginCore::handleStartElement()
 	{
 		parseSignalBoxInfo(attributes);
 	}
+	else if (nameIs(stsHITZE))
+	{
+		parseHeat(attributes);
+	}
 }
 
 void QtSts::PluginCore::handleCharacters()
@@ -187,6 +197,10 @@ void QtSts::PluginCore::handleEndElement()
 	else if (nameIs(stsANLAGENINFO))
 	{
 		Q_EMIT signalBoxInfoReceived(m_simbuild, m_signalBoxId, m_signalBoxName);
+	}
+	else if (nameIs(stsHITZE))
+	{
+		Q_EMIT heatReceived(m_heat);
 	}
 }
 
@@ -248,4 +262,13 @@ void QtSts::PluginCore::parseSignalBoxInfo(const QXmlStreamAttributes& attribute
 	const QStringRef rSimbuild = attributes.value(QStringLiteral("simbuild"));
 	if (!rSimbuild.isNull())
 		m_simbuild = rSimbuild.toUInt();
+}
+
+void QtSts::PluginCore::parseHeat(const QXmlStreamAttributes& attributes)
+{
+	const QStringRef rHeat = attributes.value(stsHITZE);
+	if (!rHeat.isNull())
+	{
+		m_heat = rHeat.toInt();
+	}
 }

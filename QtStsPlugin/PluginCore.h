@@ -50,6 +50,7 @@ namespace QtSts {
 	public Q_SLOTS:
 		void requestSimTime();
 		void requestSignalBoxInfo();
+		void requestHeat();
 		void receivedFromSts(const QByteArray& data);
 
 	Q_SIGNALS:
@@ -58,6 +59,7 @@ namespace QtSts {
 		void statusMessageReceived(int code, const QString& text);
 		void timeReceived(int offset, int rtt);
 		void signalBoxInfoReceived(int simbuild, int aid, const QString& name);
+		void heatReceived(int heat);
 
 	private:
 		void handleStartElement();
@@ -67,6 +69,7 @@ namespace QtSts {
 		void sendSimpleCommand(const QString& command);
 		void parseSimTime(const QXmlStreamAttributes& attributes);
 		void parseSignalBoxInfo(const QXmlStreamAttributes& attributes);
+		void parseHeat(const QXmlStreamAttributes& attributes);
 
 		std::unique_ptr<QXmlStreamReader> m_xmlReader;
 		QString m_pluginName;
@@ -81,6 +84,7 @@ namespace QtSts {
 		int m_timeoffset;
 		int m_signalBoxId;
 		int m_simbuild;
+		int m_heat;
 	};
 
 }
