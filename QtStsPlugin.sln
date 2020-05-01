@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtStsPlugin", "QtStsPlugin\QtStsPlugin.vcxproj", "{8FE4F37B-7E4B-4D5F-A6C4-A128C097B3F6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtStsPluginTestGui", "QtStsPluginTestGui\QtStsPluginTestGui.vcxproj", "{991C82A8-8CA4-47C1-B41C-E297B84CB3EA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8FE4F37B-7E4B-4D5F-A6C4-A128C097B3F6} = {8FE4F37B-7E4B-4D5F-A6C4-A128C097B3F6}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +20,10 @@ Global
 		{8FE4F37B-7E4B-4D5F-A6C4-A128C097B3F6}.Debug|x64.Build.0 = Debug|x64
 		{8FE4F37B-7E4B-4D5F-A6C4-A128C097B3F6}.Release|x64.ActiveCfg = Release|x64
 		{8FE4F37B-7E4B-4D5F-A6C4-A128C097B3F6}.Release|x64.Build.0 = Release|x64
+		{991C82A8-8CA4-47C1-B41C-E297B84CB3EA}.Debug|x64.ActiveCfg = Debug|x64
+		{991C82A8-8CA4-47C1-B41C-E297B84CB3EA}.Debug|x64.Build.0 = Debug|x64
+		{991C82A8-8CA4-47C1-B41C-E297B84CB3EA}.Release|x64.ActiveCfg = Release|x64
+		{991C82A8-8CA4-47C1-B41C-E297B84CB3EA}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
