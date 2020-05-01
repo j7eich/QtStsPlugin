@@ -30,7 +30,7 @@ QtSts::Plugin::Plugin(const QString& pluginName,
 	: QObject(parent)
 	, m_core(nullptr)
 	, m_socket(nullptr)
-	, m_stsHostname()
+	, m_stsHostname("localhost")
 	, m_stsPort(3691)
 	, m_ipProtocol(QAbstractSocket::AnyIPProtocol)
 {
