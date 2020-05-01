@@ -44,6 +44,7 @@ QtSts::Plugin::Plugin(const QString& pluginName,
 	auto metaCore = m_core->metaObject();
 	auto metaThis = metaObject();
 
+	// Connect signals from PluginCore to signals from Plugin if signature is identical
 	for (int i = metaCore->methodOffset(); i < metaCore->methodCount(); ++i)
 	{
 		auto coreMethod = metaCore->method(i);
