@@ -40,6 +40,8 @@ public Q_SLOTS:
 	void on_actionInstantiate_triggered();
 	void on_actionDestroy_triggered();
 	void on_actionSetConnection_triggered();
+	void communicationFromSts(const QByteArray& data);
+	void communicationToSts(const QByteArray& data);
 
 private:
 	std::unique_ptr<Ui::QtStsPluginTestGuiClass> ui;

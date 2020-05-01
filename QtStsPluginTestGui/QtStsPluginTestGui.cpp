@@ -59,6 +59,10 @@ void QtStsPluginTestGui::on_actionInstantiate_triggered()
 		m_plugin = new QtSts::Plugin(dialog.name(), dialog.author(), dialog.version(), dialog.description(), this);
 		auto connection = QObject::connect(ui->actionConnect, SIGNAL(triggered(bool)), m_plugin, SLOT(setConnected(bool)));
 		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(dataToSts(const QByteArray&)), this, SLOT(communicationToSts(const QByteArray&)));
+		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(dataFromSts(const QByteArray&)), this, SLOT(communicationFromSts(const QByteArray&)));
+		Q_ASSERT(connection);
 		ui->actionDestroy->setEnabled(true);
 		ui->actionSetConnection->setEnabled(true);
 		ui->actionConnect->setEnabled(true);
@@ -96,4 +100,18 @@ void QtStsPluginTestGui::on_actionSetConnection_triggered()
 		m_plugin->setStsPort(dialog.port());
 		m_plugin->setIpProtocol(dialog.protocol());
 	}
+}
+
+void QtStsPluginTestGui::communicationFromSts(const QByteArray& data)
+{
+	QString sIn = QString(data).toHtmlEscaped();
+	sIn = QStringLiteral("<p style=\"color:red;\">%1</p><br />").arg(sIn);
+	ui->communicationText->insertHtml(sIn);
+}
+
+void QtStsPluginTestGui::communicationToSts(const QByteArray& data)
+{
+	QString sOut = QString(data).toHtmlEscaped();
+	sOut = QStringLiteral("<p style=\"color:blue;\">%1</p><br />").arg(sOut);
+	ui->communicationText->insertHtml(sOut);
 }

@@ -13,14 +13,67 @@
   <property name="windowTitle">
    <string>QtStsPlugin Test GUI</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="centralLayout">
+    <item>
+     <layout class="QVBoxLayout" name="logLayout">
+      <item>
+       <widget class="QLabel" name="logLabel">
+        <property name="text">
+         <string>Log</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="logText">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="logClearButton">
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="communicationLayout">
+      <item>
+       <widget class="QLabel" name="communicationLabel">
+        <property name="text">
+         <string>Communication</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="communicationText">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="communicationButton">
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>948</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -106,8 +159,47 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>logText</tabstop>
+  <tabstop>logClearButton</tabstop>
+  <tabstop>communicationText</tabstop>
+  <tabstop>communicationButton</tabstop>
+ </tabstops>
  <resources>
   <include location="QtStsPluginTestGui.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>logClearButton</sender>
+   <signal>clicked()</signal>
+   <receiver>logText</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>174</x>
+     <y>587</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>174</x>
+     <y>517</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>communicationButton</sender>
+   <signal>clicked()</signal>
+   <receiver>communicationText</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>682</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>683</x>
+     <y>478</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
