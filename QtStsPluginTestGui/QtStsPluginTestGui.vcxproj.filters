@@ -31,14 +31,23 @@
     <ClCompile Include="QtStsPluginTestGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DialogPlugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtStsPluginTestGui.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="DialogPlugin.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtStsPluginTestGui.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="DialogPlugin.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

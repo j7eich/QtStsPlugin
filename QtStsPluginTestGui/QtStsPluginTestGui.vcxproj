@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DialogPlugin.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="QtStsPluginTestGui.cpp" />
   </ItemGroup>
@@ -87,6 +88,7 @@
     <QtMoc Include="QtStsPluginTestGui.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="DialogPlugin.ui" />
     <QtUic Include="QtStsPluginTestGui.ui" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +98,9 @@
     <ProjectReference Include="..\QtStsPlugin\QtStsPlugin.vcxproj">
       <Project>{8fe4f37b-7e4b-4d5f-a6c4-a128c097b3f6}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="DialogPlugin.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -16,26 +16,37 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *****************************************************************************/
 #pragma once
 
-#include <QMainWindow>
-#include "ui_QtStsPluginTestGui.h"
+#include <QDialog>
+#include <QString>
+#include <memory>
 
-namespace QtSts {
-	class Plugin;
+namespace Ui {
+	class DialogPlugin;
 }
 
-class QtStsPluginTestGui : public QMainWindow
+class DialogPlugin : public QDialog
 {
 	Q_OBJECT
+	Q_PROPERTY(QString name READ name WRITE setName)
+	Q_PROPERTY(QString author READ author WRITE setAuthor)
+	Q_PROPERTY(QString version READ version WRITE setVersion)
+	Q_PROPERTY(QString description READ description WRITE setDescription)
 
 public:
-	QtStsPluginTestGui(QWidget* parent = nullptr);
+	DialogPlugin(QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
+	~DialogPlugin() override;
+
+	QString name() const;
+	QString author() const;
+	QString version() const;
+	QString description() const;
 
 public Q_SLOTS:
-	void on_actionQuit_triggered();
-	void on_actionInstantiate_triggered();
-	void on_actionDestroy_triggered();
+	void setName(const QString& name);
+	void setAuthor(const QString& author);
+	void setVersion(const QString& version);
+	void setDescription(const QString& description);
 
 private:
-	Ui::QtStsPluginTestGuiClass ui;
-	QtSts::Plugin* m_plugin;
+	std::unique_ptr<Ui::DialogPlugin> ui;
 };

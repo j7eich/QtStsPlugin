@@ -1,29 +1,113 @@
-<UI version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>QtStsPluginTestGuiClass</class>
- <widget class="QMainWindow" name="QtStsPluginTestGuiClass" >
-  <property name="objectName" >
-   <string notr="true">QtStsPluginTestGuiClass</string>
-  </property>
-  <property name="geometry" >
+ <widget class="QMainWindow" name="QtStsPluginTestGuiClass">
+  <property name="geometry">
    <rect>
-	<x>0</x>
-	<y>0</y>
-	<width>600</width>
-	<height>400</height>
+    <x>0</x>
+    <y>0</y>
+    <width>948</width>
+    <height>653</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>QtStsPluginTestGui</string>
+  <property name="windowTitle">
+   <string>QtStsPlugin Test GUI</string>
   </property>
-  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>948</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuRequest">
+    <property name="title">
+     <string>&amp;Request</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="actionAboutQt"/>
+   </widget>
+   <widget class="QMenu" name="menuPlugin">
+    <property name="title">
+     <string>&amp;Plugin</string>
+    </property>
+    <addaction name="actionInstantiate"/>
+    <addaction name="actionDestroy"/>
+    <addaction name="separator"/>
+    <addaction name="actionSetConnection"/>
+    <addaction name="separator"/>
+    <addaction name="actionConnect"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuPlugin"/>
+   <addaction name="menuRequest"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionConnect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Connect</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+  </action>
+  <action name="actionInstantiate">
+   <property name="text">
+    <string>&amp;Instantiate...</string>
+   </property>
+  </action>
+  <action name="actionDestroy">
+   <property name="text">
+    <string>&amp;Destroy</string>
+   </property>
+  </action>
+  <action name="actionSetConnection">
+   <property name="text">
+    <string>&amp;Set Connection...</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>&amp;About...</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>About &amp;Qt...</string>
+   </property>
+  </action>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources>
-   <include location="QtStsPluginTestGui.qrc"/>
+  <include location="QtStsPluginTestGui.qrc"/>
  </resources>
  <connections/>
-</UI>
+</ui>
