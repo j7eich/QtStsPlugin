@@ -55,13 +55,19 @@ namespace QtSts {
 		void setConnected(bool connect);
 		void stsConnect() { setConnected(true); }
 		void stsDisconnect() { setConnected(false); }
+		void requestSimTime();
+		void requestSignalBoxInfo();
 
 	Q_SIGNALS:
 		void signalConnected(bool connected);
+		void statusMessageReceived(int code, const QString& text);
+		void timeReceived(int offset, int rtt);
+		void signalBoxInfoReceived(int simbuild, int aid, const QString& name);
 
 	private Q_SLOTS:
 		void on_readyRead();
 		void on_socketStateChanged(QAbstractSocket::SocketState state);
+		void sendToSocket(const QByteArray& data);
 
 	private:
 		PluginCore* m_core;

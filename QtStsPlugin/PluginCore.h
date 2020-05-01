@@ -22,6 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <memory>
 
 class QXmlStreamReader;
+class QXmlStreamAttributes;
 class QByteArray;
 
 namespace QtSts {
@@ -38,26 +39,48 @@ namespace QtSts {
 			QObject* parent = nullptr);
 		~PluginCore() override;
 
-		constexpr bool isConnected() const { return m_connected; }
+		constexpr bool isStreamActive() const { return m_streamActive; }
+		constexpr bool isRegistered() const { return m_registered; }
+		constexpr int rtt() const { return m_rtt; }
+		constexpr int timeoffset() const { return m_timeoffset; }
+		constexpr int simbuild() const { return m_simbuild; }
+		constexpr int signalBoxId() const { return m_signalBoxId; }
+		const QString& signalBoxName() const { return m_signalBoxName; }
 
 	public Q_SLOTS:
-		void parseData(const QByteArray& data);
+		void requestSimTime();
+		void requestSignalBoxInfo();
+		void receivedFromSts(const QByteArray& data);
 
 	Q_SIGNALS:
-		void communicationReady();
-		void communicationStopped();
+		void registered();
+		void sendToSts(const QByteArray& data);
+		void statusMessageReceived(int code, const QString& text);
+		void timeReceived(int offset, int rtt);
+		void signalBoxInfoReceived(int simbuild, int aid, const QString& name);
 
 	private:
 		void handleStartElement();
+		void handleCharacters();
 		void handleEndElement();
+		void sendRegister();
+		void sendSimpleCommand(const QString& command);
+		void parseSimTime(const QXmlStreamAttributes& attributes);
+		void parseSignalBoxInfo(const QXmlStreamAttributes& attributes);
 
 		std::unique_ptr<QXmlStreamReader> m_xmlReader;
 		QString m_pluginName;
 		QString m_pluginAuthor;
 		QString m_pluginVersion;
 		QString m_pluginDescription;
-		bool m_connected;
+		QString m_signalBoxName;
+		bool m_streamActive;
+		bool m_registered;
 		int m_inStatus;
+		int m_rtt;
+		int m_timeoffset;
+		int m_signalBoxId;
+		int m_simbuild;
 	};
 
 }

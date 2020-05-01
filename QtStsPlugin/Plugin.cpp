@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <QTcpSocket>
 #include <QByteArray>
+#include <QMetaObject>
+#include <QMetaMethod>
 #include "PluginCore.h"
 
 QtSts::Plugin::Plugin(const QString& pluginName,
@@ -37,6 +39,10 @@ QtSts::Plugin::Plugin(const QString& pluginName,
 	QObject::connect(m_socket, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)), this, SLOT(on_socketStateChanged(QAbstractSocket::SocketState)));
 
 	m_core = new PluginCore(pluginName, pluginAuthor, pluginVersion, pluginText, this);
+	QObject::connect(m_core, SIGNAL(sendToSts(const QByteArray&)), this, SLOT(sendToSocket(const QByteArray&)));
+	QObject::connect(m_core, SIGNAL(timeReceived(int, int)), this, SIGNAL(timeReceived(int, int)));
+	QObject::connect(m_core, SIGNAL(statusMessageReceived(int, const QString&)), this, SIGNAL(statusMessageReceived(int, const QString&)));
+	QObject::connect(m_core, SIGNAL(signalBoxInfoReceived(int, int, const QString&)), this, SIGNAL(signalBoxInfoReceived(int, int, const QString&)));
 }
 
 QtSts::Plugin::~Plugin()
@@ -78,10 +84,20 @@ void QtSts::Plugin::setConnected(bool connect)
 	}
 }
 
+void QtSts::Plugin::requestSimTime()
+{
+	m_core->requestSimTime();
+}
+
+void QtSts::Plugin::requestSignalBoxInfo()
+{
+	m_core->requestSignalBoxInfo();
+}
+
 void QtSts::Plugin::on_readyRead()
 {
 	const QByteArray buffer(m_socket->readAll());
-	m_core->parseData(buffer);
+	m_core->receivedFromSts(buffer);
 }
 
 void QtSts::Plugin::on_socketStateChanged(QAbstractSocket::SocketState state)
@@ -89,15 +105,21 @@ void QtSts::Plugin::on_socketStateChanged(QAbstractSocket::SocketState state)
 	switch (state)
 	{
 	case QAbstractSocket::UnconnectedState:
-		if (m_core->isConnected())
+		if (m_core->isStreamActive())
 		{
-			m_core->parseData(QByteArrayLiteral("</sts:stream>\n"));
+			m_core->receivedFromSts(QByteArrayLiteral("</sts:stream>\n"));
 		}
 		break;
 	case QAbstractSocket::ConnectedState:
-		m_core->parseData(QByteArrayLiteral("<sts:stream>\n"));
+		Q_ASSERT(m_core->isStreamActive() == false);
+		m_core->receivedFromSts(QByteArrayLiteral("<sts:stream>\n"));
 		break;
 	default:
 		break;
 	}
+}
+
+void QtSts::Plugin::sendToSocket(const QByteArray& data)
+{
+	m_socket->write(data);
 }
