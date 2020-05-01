@@ -17,9 +17,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "QtStsPluginTestGui.h"
 #include <QApplication>
 
+#include "../QtStsPlugin/Plugin.h"
+
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
+
+	QtSts::Plugin plugin("Name", "Author", "1.0", "Description");
+
 	QtStsPluginTestGui w;
 	w.show();
 	return a.exec();
