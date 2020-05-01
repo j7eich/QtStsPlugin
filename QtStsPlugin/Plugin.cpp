@@ -112,6 +112,7 @@ void QtSts::Plugin::on_readyRead()
 {
 	const QByteArray buffer(m_socket->readAll());
 	m_core->receivedFromSts(buffer);
+	Q_EMIT dataFromSts(buffer);
 }
 
 void QtSts::Plugin::on_socketStateChanged(QAbstractSocket::SocketState state)
@@ -136,4 +137,5 @@ void QtSts::Plugin::on_socketStateChanged(QAbstractSocket::SocketState state)
 void QtSts::Plugin::sendToSocket(const QByteArray& data)
 {
 	m_socket->write(data);
+	Q_EMIT dataToSts(data);
 }

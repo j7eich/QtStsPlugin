@@ -63,6 +63,8 @@ namespace QtSts {
 		void statusMessageReceived(int code, const QString& text);
 		void timeReceived(int offset, int rtt);
 		void signalBoxInfoReceived(int simbuild, int aid, const QString& name);
+		void dataFromSts(const QByteArray& data);
+		void dataToSts(const QByteArray& data);
 
 	private Q_SLOTS:
 		void on_readyRead();
