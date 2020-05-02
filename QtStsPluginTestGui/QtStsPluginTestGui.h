@@ -56,6 +56,26 @@ public Q_SLOTS:
 	void on_heatReceived(int heat);
 	void on_stitzReceived(int allgemein, int region);
 	void on_trainListReceived(const QList<QPair<int, QString>>& trainList);
+	void on_trainDetailsReceived(int trainId, const QString& name,
+		const QString& from, const QString& to,
+		const QString& track, const QString& plannedTrack,
+		int delay, bool onTrack, bool visible);
+	void on_incomingTrainReceived(int trainId, const QString& name,
+		const QString& from, const QString& to,
+		const QString& track, const QString& plannedTrack,
+		int delay, bool onTrack, bool visible);
+	void on_outgoingTrainReceived(int trainId, const QString& name,
+		const QString& from, const QString& to,
+		const QString& track, const QString& plannedTrack,
+		int delay, bool onTrack, bool visible);
+	void on_arrivingTrainReceived(int trainId, const QString& name,
+		const QString& from, const QString& to,
+		const QString& track, const QString& plannedTrack,
+		int delay, bool onTrack, bool visible);
+	void on_departingTrainReceived(int trainId, const QString& name,
+		const QString& from, const QString& to,
+		const QString& track, const QString& plannedTrack,
+		int delay, bool onTrack, bool visible);
 
 private:
 	void addToCommunicationLog(const QByteArray& data, bool outgoing, bool scrollToEnd);

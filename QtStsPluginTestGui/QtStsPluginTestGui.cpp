@@ -80,6 +80,22 @@ void QtStsPluginTestGui::on_actionInstantiate_triggered()
 		Q_ASSERT(connection);
 		connection = QObject::connect(m_plugin, SIGNAL(trainListReceived(const QList<QPair<int, QString>>&)), this, SLOT(on_trainListReceived(const QList<QPair<int, QString>>&)));
 		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(trainDetailsReceived(int, const QString&, const QString&, const QString&, const QString&, const QString&, int, bool, bool)),
+			this, SLOT(on_trainDetailsReceived(int, const QString&, const QString&, const QString&, const QString&, const QString&, int, bool, bool)));
+		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(incomingTrainReceived(int, const QString&, const QString&, const QString&, const QString&, const QString&, int, bool, bool)),
+			this, SLOT(on_incomingTrainReceived(int, const QString&, const QString&, const QString&, const QString&, const QString&, int, bool, bool)));
+		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(outgoingTrainReceived(int, const QString&, const QString&, const QString&, const QString&, const QString&, int, bool, bool)),
+			this, SLOT(on_outgoingTrainReceived(int, const QString&, const QString&, const QString&, const QString&, const QString&, int, bool, bool)));
+		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(arrivingTrainReceived(int, const QString&, const QString&, const QString&, const QString&, const QString&, int, bool, bool)),
+			this, SLOT(on_arrivingTrainReceived(int, const QString&, const QString&, const QString&, const QString&, const QString&, int, bool, bool)));
+		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(departingTrainReceived(int, const QString&, const QString&, const QString&, const QString&, const QString&, int, bool, bool)),
+			this, SLOT(on_departingTrainReceived(int, const QString&, const QString&, const QString&, const QString&, const QString&, int, bool, bool)));
+		Q_ASSERT(connection);
+
 		ui->actionDestroy->setEnabled(true);
 		ui->actionSetConnection->setEnabled(true);
 		ui->actionConnect->setEnabled(true);
@@ -207,6 +223,54 @@ void QtStsPluginTestGui::on_trainListReceived(const QList<QPair<int, QString>>& 
 	{
 		log.append(QStringLiteral("\n\t%1 / %2").arg(train.first).arg(train.second));
 	}
+	ui->logText->append(log);
+}
+
+namespace {
+	void addLogText(QString& log, int trainId, const QString& name, const QString& from, const QString& to, const QString& track, const QString& plannedTrack, int delay, bool onTrack, bool visible)
+	{
+		log.append(QStringLiteral("\n\ttrainId=%1").arg(trainId));
+		log.append(QStringLiteral("\n\tname=\"%1\"").arg(name));
+		log.append(QStringLiteral("\n\tfrom=\"%1\"\n\tto=\"%2\"").arg(from).arg(to));
+		log.append(QStringLiteral("\n\ttrack=\"%1\"\n\tplannedTrack=\"%2\"").arg(track).arg(plannedTrack));
+		log.append(QStringLiteral("\n\tdelay=%1").arg(delay));
+		log.append(QStringLiteral("\n\tonTrack=%1\n\tvisible=%2").arg(onTrack).arg(visible));
+	}
+}
+
+void QtStsPluginTestGui::on_trainDetailsReceived(int trainId, const QString& name, const QString& from, const QString& to, const QString& track, const QString& plannedTrack, int delay, bool onTrack, bool visible)
+{
+	QString log(tr("trainDetailsReceived:"));
+	addLogText(log, trainId, name, from, to, track, plannedTrack, delay, onTrack, visible);
+	ui->logText->append(log);
+
+}
+
+void QtStsPluginTestGui::on_incomingTrainReceived(int trainId, const QString& name, const QString& from, const QString& to, const QString& track, const QString& plannedTrack, int delay, bool onTrack, bool visible)
+{
+	QString log(tr("incomingTrainReceived:"));
+	addLogText(log, trainId, name, from, to, track, plannedTrack, delay, onTrack, visible);
+	ui->logText->append(log);
+}
+
+void QtStsPluginTestGui::on_outgoingTrainReceived(int trainId, const QString& name, const QString& from, const QString& to, const QString& track, const QString& plannedTrack, int delay, bool onTrack, bool visible)
+{
+	QString log(tr("outgoingTrainReceived:"));
+	addLogText(log, trainId, name, from, to, track, plannedTrack, delay, onTrack, visible);
+	ui->logText->append(log);
+}
+
+void QtStsPluginTestGui::on_arrivingTrainReceived(int trainId, const QString& name, const QString& from, const QString& to, const QString& track, const QString& plannedTrack, int delay, bool onTrack, bool visible)
+{
+	QString log(tr("arrivingTrainReceived:"));
+	addLogText(log, trainId, name, from, to, track, plannedTrack, delay, onTrack, visible);
+	ui->logText->append(log);
+}
+
+void QtStsPluginTestGui::on_departingTrainReceived(int trainId, const QString& name, const QString& from, const QString& to, const QString& track, const QString& plannedTrack, int delay, bool onTrack, bool visible)
+{
+	QString log(tr("departingTrainReceived:"));
+	addLogText(log, trainId, name, from, to, track, plannedTrack, delay, onTrack, visible);
 	ui->logText->append(log);
 }
 

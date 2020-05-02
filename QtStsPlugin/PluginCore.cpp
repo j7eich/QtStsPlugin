@@ -22,7 +22,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <QTime>
 
 namespace QtSts {
+	static const QString stsABFAHRT("abfahrt");
+	static const QString stsANKUNFT("ankunft");
 	static const QString stsANLAGENINFO(QStringLiteral("anlageninfo"));
+	static const QString stsAUSFAHRT("ausfahrt");
+	static const QString stsEINFAHRT("einfahrt");
+	static const QString stsEREIGNIS(QStringLiteral("ereignis"));
 	static const QString stsHITZE(QStringLiteral("hitze"));
 	static const QString stsNAME(QStringLiteral("name"));
 	static const QString stsSENDER(QStringLiteral("sender"));
@@ -168,6 +173,10 @@ void QtSts::PluginCore::handleStartElement()
 	if (nameIs(stsZUG))
 	{
 		parseTrain(attributes);
+	}
+	else if (nameIs(stsZUGDETAILS))
+	{
+		parseTrainDetails(attributes);
 	}
 	else if (nameIs(stsZUGLISTE))
 	{
@@ -345,4 +354,53 @@ void QtSts::PluginCore::parseTrain(const QXmlStreamAttributes& attributes)
 	const TrainListItem train(rZid.toInt(), rName.toString());
 	Q_ASSERT(m_trainList.contains(train) == false);
 	m_trainList.append(train);
+}
+
+void QtSts::PluginCore::parseTrainDetails(const QXmlStreamAttributes& attributes)
+{
+	const QStringRef rVisible = attributes.value(QStringLiteral("sichtbar"));
+	const QStringRef rOnTrack = attributes.value(QStringLiteral("amgleis"));
+	const QStringRef rEvent = attributes.value(stsEREIGNIS);
+
+	auto toBool = [](const QStringRef& ref) ->bool {
+		return (ref.compare(QStringLiteral("true"), Qt::CaseInsensitive) == 0);
+	};
+
+	const bool bOnTrack = toBool(rOnTrack);
+	const bool bVisible = toBool(rVisible);
+	const int zid = attributes.value(stsZID).toInt();
+	const QString name = attributes.value(stsNAME).toString();
+	const int delay = attributes.value(QStringLiteral("verspaetung")).toInt();
+	const QString from = attributes.value(QStringLiteral("von")).toString();
+	const QString to = attributes.value(QStringLiteral("nach")).toString();
+	const QString track = attributes.value(QStringLiteral("gleis")).toString();
+	const QString plannedTrack = attributes.value(QStringLiteral("plangleis")).toString();
+
+	if (rEvent.isNull())
+	{
+		Q_EMIT trainDetailsReceived(zid, name, from, to, track, plannedTrack, delay, bOnTrack, bVisible);
+	}
+	else
+	{
+		auto isEvent = [&rEvent](const QString& eventName) ->bool {
+			return (rEvent.compare(eventName) == 0);
+		};
+
+		if (isEvent(stsEINFAHRT))
+		{
+			Q_EMIT incomingTrainReceived(zid, name, from, to, track, plannedTrack, delay, bOnTrack, bVisible);
+		}
+		else if (isEvent(stsANKUNFT))
+		{
+			Q_EMIT arrivingTrainReceived(zid, name, from, to, track, plannedTrack, delay, bOnTrack, bVisible);
+		}
+		else if (isEvent(stsABFAHRT))
+		{
+			Q_EMIT departingTrainReceived(zid, name, from, to, track, plannedTrack, delay, bOnTrack, bVisible);
+		}
+		else if (isEvent(stsAUSFAHRT))
+		{
+			Q_EMIT outgoingTrainReceived(zid, name, from, to, track, plannedTrack, delay, bOnTrack, bVisible);
+		}
+	}
 }
