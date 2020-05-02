@@ -62,6 +62,7 @@ namespace QtSts {
 		void requestHeat();
 		void requestStitz();
 		void requestTrainList();
+		void requestTrainInfo(int trainId);
 		void receivedFromSts(const QByteArray& data);
 
 	Q_SIGNALS:

@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <QApplication>
 #include <QScrollBar>
+#include <QInputDialog>
 
 #include "../QtStsPlugin/Plugin.h"
 #include "DialogPlugin.h"
@@ -147,6 +148,16 @@ void QtStsPluginTestGui::on_actionStitz_triggered()
 void QtStsPluginTestGui::on_actionTrainList_triggered()
 {
 	m_plugin->requestTrainList();
+}
+
+void QtStsPluginTestGui::on_actionTrainInfo_triggered()
+{
+	bool ok = false;
+	const int trainId = QInputDialog::getInt(this, tr("Request Train Info"), tr("Train ID"), 0, -2147483647, 2147483647, 1, &ok);
+	if (ok)
+	{
+		m_plugin->requestTrainInfo(trainId);
+	}
 }
 
 void QtStsPluginTestGui::communicationFromSts(const QByteArray& data)

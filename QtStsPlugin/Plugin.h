@@ -60,6 +60,7 @@ namespace QtSts {
 		void requestHeat();
 		void requestStitz();
 		void requestTrainList();
+		void requestTrainInfo(int trainId);
 
 	Q_SIGNALS:
 		void signalConnected(bool connected);

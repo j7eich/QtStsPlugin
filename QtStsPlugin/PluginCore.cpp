@@ -31,6 +31,7 @@ namespace QtSts {
 	static const QString stsSTITZ(QStringLiteral("stitz"));
 	static const QString stsZID(QStringLiteral("zid"));
 	static const QString stsZUG(QStringLiteral("zug"));
+	static const QString stsZUGDETAILS("zugdetails");
 	static const QString stsZUGLISTE(QStringLiteral("zugliste"));
 
 	static constexpr int stsSTATUS_NOT_REGISTERED = 300;
@@ -96,6 +97,18 @@ void QtSts::PluginCore::requestStitz()
 void QtSts::PluginCore::requestTrainList()
 {
 	sendSimpleCommand(stsZUGLISTE);
+}
+
+void QtSts::PluginCore::requestTrainInfo(int trainId)
+{
+	QByteArray data;
+	QXmlStreamWriter xml(&data);
+	xml.writeStartElement(stsZUGDETAILS);
+	xml.writeAttribute(stsZID, QString::number(trainId));
+	xml.writeEndElement();
+	xml.writeEndDocument();
+
+	Q_EMIT sendToSts(data);
 }
 
 void QtSts::PluginCore::receivedFromSts(const QByteArray& data)

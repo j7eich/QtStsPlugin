@@ -124,6 +124,11 @@ void QtSts::Plugin::requestTrainList()
 	m_core->requestTrainList();
 }
 
+void QtSts::Plugin::requestTrainInfo(int trainId)
+{
+	m_core->requestTrainInfo(trainId);
+}
+
 void QtSts::Plugin::on_readyRead()
 {
 	const QByteArray buffer(m_socket->readAll());
