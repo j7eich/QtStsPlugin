@@ -46,11 +46,15 @@ namespace QtSts {
 		constexpr int simbuild() const { return m_simbuild; }
 		constexpr int signalBoxId() const { return m_signalBoxId; }
 		const QString& signalBoxName() const { return m_signalBoxName; }
+		constexpr int heat() const { return m_heat; }
+		constexpr int stitzAllgemein() const { return m_stitzAllgemein; }
+		constexpr int stitzRegion() const { return m_stitzRegion; }
 
 	public Q_SLOTS:
 		void requestSimTime();
 		void requestSignalBoxInfo();
 		void requestHeat();
+		void requestStitz();
 		void receivedFromSts(const QByteArray& data);
 
 	Q_SIGNALS:
@@ -60,6 +64,7 @@ namespace QtSts {
 		void timeReceived(int offset, int rtt);
 		void signalBoxInfoReceived(int simbuild, int aid, const QString& name);
 		void heatReceived(int heat);
+		void stitzReceived(int allgemein, int region);
 
 	private:
 		void handleStartElement();
@@ -70,6 +75,7 @@ namespace QtSts {
 		void parseSimTime(const QXmlStreamAttributes& attributes);
 		void parseSignalBoxInfo(const QXmlStreamAttributes& attributes);
 		void parseHeat(const QXmlStreamAttributes& attributes);
+		void parseStitz(const QXmlStreamAttributes& attributes);
 
 		std::unique_ptr<QXmlStreamReader> m_xmlReader;
 		QString m_pluginName;
@@ -85,6 +91,8 @@ namespace QtSts {
 		int m_signalBoxId;
 		int m_simbuild;
 		int m_heat;
+		int m_stitzAllgemein;
+		int m_stitzRegion;
 	};
 
 }

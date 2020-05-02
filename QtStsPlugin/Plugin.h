@@ -58,6 +58,7 @@ namespace QtSts {
 		void requestSimTime();
 		void requestSignalBoxInfo();
 		void requestHeat();
+		void requestStitz();
 
 	Q_SIGNALS:
 		void signalConnected(bool connected);
@@ -65,6 +66,7 @@ namespace QtSts {
 		void timeReceived(int offset, int rtt);
 		void signalBoxInfoReceived(int simbuild, int aid, const QString& name);
 		void heatReceived(int heat);
+		void stitzReceived(int allgemein, int region);
 		void dataFromSts(const QByteArray& data);
 		void dataToSts(const QByteArray& data);
 

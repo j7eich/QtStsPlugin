@@ -28,6 +28,7 @@ namespace QtSts {
 	static const QString stsSENDER(QStringLiteral("sender"));
 	static const QString stsSIMZEIT(QStringLiteral("simzeit"));
 	static const QString stsSTATUS(QStringLiteral("status"));
+	static const QString stsSTITZ(QStringLiteral("stitz"));
 
 	static constexpr int stsSTATUS_NOT_REGISTERED = 300;
 	static constexpr int stsSTATUS_REGISTERED_OK = 220;
@@ -52,6 +53,9 @@ QtSts::PluginCore::PluginCore(const QString& pluginName,
 	, m_timeoffset(0)
 	, m_signalBoxId(0)
 	, m_simbuild(0)
+	, m_heat(0)
+	, m_stitzAllgemein(0)
+	, m_stitzRegion(0)
 {
 }
 
@@ -79,6 +83,11 @@ void QtSts::PluginCore::requestSignalBoxInfo()
 void QtSts::PluginCore::requestHeat()
 {
 	sendSimpleCommand(stsHITZE);
+}
+
+void QtSts::PluginCore::requestStitz()
+{
+	sendSimpleCommand(stsSTITZ);
 }
 
 void QtSts::PluginCore::receivedFromSts(const QByteArray& data)
@@ -111,6 +120,9 @@ void QtSts::PluginCore::receivedFromSts(const QByteArray& data)
 			m_timeoffset = 0;
 			m_signalBoxId = 0;
 			m_simbuild = 0;
+			m_heat = 0;
+			m_stitzAllgemein = 0;
+			m_stitzRegion = 0;
 			m_signalBoxName.clear();
 			break;
 		case QXmlStreamReader::Invalid:
@@ -152,6 +164,10 @@ void QtSts::PluginCore::handleStartElement()
 	else if (nameIs(stsHITZE))
 	{
 		parseHeat(attributes);
+	}
+	else if (nameIs(stsSTITZ))
+	{
+		parseStitz(attributes);
 	}
 }
 
@@ -201,6 +217,10 @@ void QtSts::PluginCore::handleEndElement()
 	else if (nameIs(stsHITZE))
 	{
 		Q_EMIT heatReceived(m_heat);
+	}
+	else if (nameIs(stsSTITZ))
+	{
+		Q_EMIT stitzReceived(m_stitzAllgemein, m_stitzRegion);
 	}
 }
 
@@ -271,4 +291,13 @@ void QtSts::PluginCore::parseHeat(const QXmlStreamAttributes& attributes)
 	{
 		m_heat = rHeat.toInt();
 	}
+}
+
+void QtSts::PluginCore::parseStitz(const QXmlStreamAttributes& attributes)
+{
+	const QStringRef rRegion = attributes.value(QStringLiteral("region"));
+	const QStringRef rAllgemein = attributes.value(QStringLiteral("allgemein"));
+
+	m_stitzAllgemein = rAllgemein.toInt();
+	m_stitzRegion = rRegion.toInt();
 }
