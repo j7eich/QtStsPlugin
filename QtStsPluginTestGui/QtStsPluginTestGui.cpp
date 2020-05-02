@@ -77,6 +77,8 @@ void QtStsPluginTestGui::on_actionInstantiate_triggered()
 		Q_ASSERT(connection);
 		connection = QObject::connect(m_plugin, SIGNAL(stitzReceived(int, int)), this, SLOT(on_stitzReceived(int, int)));
 		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(trainListReceived(const QList<QPair<int, QString>>&)), this, SLOT(on_trainListReceived(const QList<QPair<int, QString>>&)));
+		Q_ASSERT(connection);
 		ui->actionDestroy->setEnabled(true);
 		ui->actionSetConnection->setEnabled(true);
 		ui->actionConnect->setEnabled(true);
@@ -142,6 +144,11 @@ void QtStsPluginTestGui::on_actionStitz_triggered()
 	m_plugin->requestStitz();
 }
 
+void QtStsPluginTestGui::on_actionTrainList_triggered()
+{
+	m_plugin->requestTrainList();
+}
+
 void QtStsPluginTestGui::communicationFromSts(const QByteArray& data)
 {
 	addToCommunicationLog(data, false, true);
@@ -180,6 +187,16 @@ void QtStsPluginTestGui::on_heatReceived(int heat)
 void QtStsPluginTestGui::on_stitzReceived(int allgemein, int region)
 {
 	ui->logText->append(tr("stitzReceived: allgemein=%1, region=%2").arg(allgemein).arg(region));
+}
+
+void QtStsPluginTestGui::on_trainListReceived(const QList<QPair<int, QString>>& trainList)
+{
+	QString log(tr("trainListReceived: trainList="));
+	for (auto train : trainList)
+	{
+		log.append(QStringLiteral("\n\t%1 / %2").arg(train.first).arg(train.second));
+	}
+	ui->logText->append(log);
 }
 
 void QtStsPluginTestGui::addToCommunicationLog(const QByteArray& data, bool outgoing, bool scrollToEnd)

@@ -119,6 +119,11 @@ void QtSts::Plugin::requestStitz()
 	m_core->requestStitz();
 }
 
+void QtSts::Plugin::requestTrainList()
+{
+	m_core->requestTrainList();
+}
+
 void QtSts::Plugin::on_readyRead()
 {
 	const QByteArray buffer(m_socket->readAll());

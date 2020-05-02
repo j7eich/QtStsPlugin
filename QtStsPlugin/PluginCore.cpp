@@ -29,6 +29,9 @@ namespace QtSts {
 	static const QString stsSIMZEIT(QStringLiteral("simzeit"));
 	static const QString stsSTATUS(QStringLiteral("status"));
 	static const QString stsSTITZ(QStringLiteral("stitz"));
+	static const QString stsZID(QStringLiteral("zid"));
+	static const QString stsZUG(QStringLiteral("zug"));
+	static const QString stsZUGLISTE(QStringLiteral("zugliste"));
 
 	static constexpr int stsSTATUS_NOT_REGISTERED = 300;
 	static constexpr int stsSTATUS_REGISTERED_OK = 220;
@@ -56,8 +59,8 @@ QtSts::PluginCore::PluginCore(const QString& pluginName,
 	, m_heat(0)
 	, m_stitzAllgemein(0)
 	, m_stitzRegion(0)
-{
-}
+	, m_trainList()
+{}
 
 QtSts::PluginCore::~PluginCore() = default;
 
@@ -88,6 +91,11 @@ void QtSts::PluginCore::requestHeat()
 void QtSts::PluginCore::requestStitz()
 {
 	sendSimpleCommand(stsSTITZ);
+}
+
+void QtSts::PluginCore::requestTrainList()
+{
+	sendSimpleCommand(stsZUGLISTE);
 }
 
 void QtSts::PluginCore::receivedFromSts(const QByteArray& data)
@@ -126,6 +134,7 @@ void QtSts::PluginCore::receivedFromSts(const QByteArray& data)
 			m_signalBoxName.clear();
 			break;
 		case QXmlStreamReader::Invalid:
+			qt_noop();
 			//handleInvalid();
 			break;
 		default:
@@ -143,7 +152,16 @@ void QtSts::PluginCore::handleStartElement()
 		return (rName.compare(value, Qt::CaseInsensitive) == 0);
 	};
 
-	if (nameIs(stsSTATUS))
+	if (nameIs(stsZUG))
+	{
+		parseTrain(attributes);
+	}
+	else if (nameIs(stsZUGLISTE))
+	{
+		m_trainList.clear();
+		// clear current train list. Ready to receive trains.
+	}
+	else if (nameIs(stsSTATUS))
 	{
 		const QStringRef rCode = attributes.value(QStringLiteral("code"));
 		bool ok = false;
@@ -188,7 +206,11 @@ void QtSts::PluginCore::handleEndElement()
 		return (rName.compare(value, Qt::CaseInsensitive) == 0);
 	};
 
-	if (nameIs(stsSTATUS))
+	if (nameIs(stsZUGLISTE))
+	{
+		Q_EMIT trainListReceived(m_trainList);
+	}
+	else if (nameIs(stsSTATUS))
 	{
 		switch (m_inStatus)
 		{
@@ -300,4 +322,14 @@ void QtSts::PluginCore::parseStitz(const QXmlStreamAttributes& attributes)
 
 	m_stitzAllgemein = rAllgemein.toInt();
 	m_stitzRegion = rRegion.toInt();
+}
+
+void QtSts::PluginCore::parseTrain(const QXmlStreamAttributes& attributes)
+{
+	const QStringRef rZid = attributes.value(stsZID);
+	const QStringRef rName = attributes.value(stsNAME);
+
+	const TrainListItem train(rZid.toInt(), rName.toString());
+	Q_ASSERT(m_trainList.contains(train) == false);
+	m_trainList.append(train);
 }

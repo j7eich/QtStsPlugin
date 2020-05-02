@@ -90,6 +90,7 @@
     <addaction name="actionSignalBoxInfo"/>
     <addaction name="actionHeat"/>
     <addaction name="actionStitz"/>
+    <addaction name="actionTrainList"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -179,6 +180,11 @@
   <action name="actionStitz">
    <property name="text">
     <string>STIT&amp;Z</string>
+   </property>
+  </action>
+  <action name="actionTrainList">
+   <property name="text">
+    <string>T&amp;rain List</string>
    </property>
   </action>
  </widget>

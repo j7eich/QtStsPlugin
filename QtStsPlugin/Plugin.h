@@ -59,6 +59,7 @@ namespace QtSts {
 		void requestSignalBoxInfo();
 		void requestHeat();
 		void requestStitz();
+		void requestTrainList();
 
 	Q_SIGNALS:
 		void signalConnected(bool connected);
@@ -67,6 +68,7 @@ namespace QtSts {
 		void signalBoxInfoReceived(int simbuild, int aid, const QString& name);
 		void heatReceived(int heat);
 		void stitzReceived(int allgemein, int region);
+		void trainListReceived(const QList<QPair<int, QString>>& trainList);
 		void dataFromSts(const QByteArray& data);
 		void dataToSts(const QByteArray& data);
 

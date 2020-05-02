@@ -19,6 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "qtstsplugin_global.h"
 #include <QObject>
 #include <QString>
+#include <QList>
+#include <QPair>
 #include <memory>
 
 class QXmlStreamReader;
@@ -32,6 +34,9 @@ namespace QtSts {
 		Q_OBJECT
 
 	public:
+		using TrainListItem = QPair<int, QString>;
+		using TrainList = QList<TrainListItem>;
+
 		PluginCore(const QString& pluginName,
 			const QString& pluginAuthor,
 			const QString& pluginVersion,
@@ -49,12 +54,14 @@ namespace QtSts {
 		constexpr int heat() const { return m_heat; }
 		constexpr int stitzAllgemein() const { return m_stitzAllgemein; }
 		constexpr int stitzRegion() const { return m_stitzRegion; }
+		const TrainList& trainList() const { return m_trainList; }
 
 	public Q_SLOTS:
 		void requestSimTime();
 		void requestSignalBoxInfo();
 		void requestHeat();
 		void requestStitz();
+		void requestTrainList();
 		void receivedFromSts(const QByteArray& data);
 
 	Q_SIGNALS:
@@ -65,6 +72,7 @@ namespace QtSts {
 		void signalBoxInfoReceived(int simbuild, int aid, const QString& name);
 		void heatReceived(int heat);
 		void stitzReceived(int allgemein, int region);
+		void trainListReceived(const QList<QPair<int, QString>>& trainList);
 
 	private:
 		void handleStartElement();
@@ -76,6 +84,7 @@ namespace QtSts {
 		void parseSignalBoxInfo(const QXmlStreamAttributes& attributes);
 		void parseHeat(const QXmlStreamAttributes& attributes);
 		void parseStitz(const QXmlStreamAttributes& attributes);
+		void parseTrain(const QXmlStreamAttributes& attributes);
 
 		std::unique_ptr<QXmlStreamReader> m_xmlReader;
 		QString m_pluginName;
@@ -93,6 +102,7 @@ namespace QtSts {
 		int m_heat;
 		int m_stitzAllgemein;
 		int m_stitzRegion;
+		TrainList m_trainList;
 	};
 
 }
