@@ -65,6 +65,18 @@ void QtStsPluginTestGui::on_actionInstantiate_triggered()
 		Q_ASSERT(connection);
 		connection = QObject::connect(m_plugin, SIGNAL(dataFromSts(const QByteArray&)), this, SLOT(communicationFromSts(const QByteArray&)));
 		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(signalConnected(bool)), this, SLOT(on_signalConnected(bool)));
+		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(statusMessageReceived(int, const QString&)), this, SLOT(on_statusMessageReceived(int, const QString&)));
+		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(timeReceived(int, int)), this, SLOT(on_timeReceived(int, int)));
+		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(signalBoxInfoReceived(int, int, const QString&)), this, SLOT(on_signalBoxInfoReceived(int, int, const QString&)));
+		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(heatReceived(int)), this, SLOT(on_heatReceived(int)));
+		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(stitzReceived(int, int)), this, SLOT(on_stitzReceived(int, int)));
+		Q_ASSERT(connection);
 		ui->actionDestroy->setEnabled(true);
 		ui->actionSetConnection->setEnabled(true);
 		ui->actionConnect->setEnabled(true);
@@ -125,6 +137,11 @@ void QtStsPluginTestGui::on_actionHeat_triggered()
 	m_plugin->requestHeat();
 }
 
+void QtStsPluginTestGui::on_actionStitz_triggered()
+{
+	m_plugin->requestStitz();
+}
+
 void QtStsPluginTestGui::communicationFromSts(const QByteArray& data)
 {
 	addToCommunicationLog(data, false, true);
@@ -133,6 +150,36 @@ void QtStsPluginTestGui::communicationFromSts(const QByteArray& data)
 void QtStsPluginTestGui::communicationToSts(const QByteArray& data)
 {
 	addToCommunicationLog(data, true, true);
+}
+
+void QtStsPluginTestGui::on_signalConnected(bool connected)
+{
+	ui->logText->append(tr("signalConnected: connected=%1").arg(connected));
+}
+
+void QtStsPluginTestGui::on_statusMessageReceived(int code, const QString& text)
+{
+	ui->logText->append(tr("statusMessageReceived: code=%1, text=\"%2\"").arg(code).arg(text));
+}
+
+void QtStsPluginTestGui::on_timeReceived(int offset, int rtt)
+{
+	ui->logText->append(tr("timeReceived: offset=%1, rtt=%2").arg(offset).arg(rtt));
+}
+
+void QtStsPluginTestGui::on_signalBoxInfoReceived(int simbuild, int aid, const QString& name)
+{
+	ui->logText->append(tr("signalBoxInfoReceived: simbuild=%1, aid=%2, name=\"%3\"").arg(simbuild).arg(aid).arg(name));
+}
+
+void QtStsPluginTestGui::on_heatReceived(int heat)
+{
+	ui->logText->append(tr("heatReceived: heat=%1").arg(heat));
+}
+
+void QtStsPluginTestGui::on_stitzReceived(int allgemein, int region)
+{
+	ui->logText->append(tr("stitzReceived: allgemein=%1, region=%2").arg(allgemein).arg(region));
 }
 
 void QtStsPluginTestGui::addToCommunicationLog(const QByteArray& data, bool outgoing, bool scrollToEnd)

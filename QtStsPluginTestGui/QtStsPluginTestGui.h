@@ -43,8 +43,16 @@ public Q_SLOTS:
 	void on_actionSimTime_triggered();
 	void on_actionSignalBoxInfo_triggered();
 	void on_actionHeat_triggered();
+	void on_actionStitz_triggered();
 	void communicationFromSts(const QByteArray& data);
 	void communicationToSts(const QByteArray& data);
+
+	void on_signalConnected(bool connected);
+	void on_statusMessageReceived(int code, const QString& text);
+	void on_timeReceived(int offset, int rtt);
+	void on_signalBoxInfoReceived(int simbuild, int aid, const QString& name);
+	void on_heatReceived(int heat);
+	void on_stitzReceived(int allgemein, int region);
 
 private:
 	void addToCommunicationLog(const QByteArray& data, bool outgoing, bool scrollToEnd);
