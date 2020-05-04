@@ -27,12 +27,15 @@
     <ClCompile Include="PluginCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Train.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="qtstsplugin_global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TrainEventFlags.h">
+    <ClInclude Include="Train.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

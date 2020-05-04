@@ -22,6 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <QList>
 #include <QPair>
 #include <memory>
+#include "Train.h"
 
 class QXmlStreamReader;
 class QXmlStreamAttributes;
@@ -74,26 +75,7 @@ namespace QtSts {
 		void heatReceived(int heat);
 		void stitzReceived(int allgemein, int region);
 		void trainListReceived(const QList<QPair<int, QString>>& trainList);
-		void trainDetailsReceived(int trainId, const QString& name,
-			const QString& from, const QString& to,
-			const QString& track, const QString& plannedTrack,
-			int delay, bool onTrack, bool visible);
-		void incomingTrainReceived(int trainId, const QString& name,
-			const QString& from, const QString& to,
-			const QString& track, const QString& plannedTrack,
-			int delay, bool onTrack, bool visible);
-		void outgoingTrainReceived(int trainId, const QString& name,
-			const QString& from, const QString& to,
-			const QString& track, const QString& plannedTrack,
-			int delay, bool onTrack, bool visible);
-		void arrivingTrainReceived(int trainId, const QString& name,
-			const QString& from, const QString& to,
-			const QString& track, const QString& plannedTrack,
-			int delay, bool onTrack, bool visible);
-		void departingTrainReceived(int trainId, const QString& name,
-			const QString& from, const QString& to,
-			const QString& track, const QString& plannedTrack,
-			int delay, bool onTrack, bool visible);
+		void trainDetailsReceived(QtSts::Train train, QtSts::TrainEvent event);
 
 	private:
 		void handleStartElement();

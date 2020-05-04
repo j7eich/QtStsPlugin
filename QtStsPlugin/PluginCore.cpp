@@ -66,7 +66,9 @@ QtSts::PluginCore::PluginCore(const QString& pluginName,
 	, m_stitzAllgemein(0)
 	, m_stitzRegion(0)
 	, m_trainList()
-{}
+{
+	qRegisterMetaType<QtSts::Train>();
+}
 
 QtSts::PluginCore::~PluginCore() = default;
 
@@ -358,29 +360,26 @@ void QtSts::PluginCore::parseTrain(const QXmlStreamAttributes& attributes)
 
 void QtSts::PluginCore::parseTrainDetails(const QXmlStreamAttributes& attributes)
 {
-	const QStringRef rVisible = attributes.value(QStringLiteral("sichtbar"));
-	const QStringRef rOnTrack = attributes.value(QStringLiteral("amgleis"));
-	const QStringRef rEvent = attributes.value(stsEREIGNIS);
-
 	auto toBool = [](const QStringRef& ref) ->bool {
 		return (ref.compare(QStringLiteral("true"), Qt::CaseInsensitive) == 0);
 	};
 
-	const bool bOnTrack = toBool(rOnTrack);
-	const bool bVisible = toBool(rVisible);
-	const int zid = attributes.value(stsZID).toInt();
-	const QString name = attributes.value(stsNAME).toString();
-	const int delay = attributes.value(QStringLiteral("verspaetung")).toInt();
-	const QString from = attributes.value(QStringLiteral("von")).toString();
-	const QString to = attributes.value(QStringLiteral("nach")).toString();
-	const QString track = attributes.value(QStringLiteral("gleis")).toString();
-	const QString plannedTrack = attributes.value(QStringLiteral("plangleis")).toString();
-
-	if (rEvent.isNull())
-	{
-		Q_EMIT trainDetailsReceived(zid, name, from, to, track, plannedTrack, delay, bOnTrack, bVisible);
-	}
-	else
+	Train train{
+		attributes.value(stsZID).toInt(),
+		attributes.value(QStringLiteral("verspaetung")).toInt(),
+		toBool(attributes.value(QStringLiteral("amgleis"))),
+		toBool(attributes.value(QStringLiteral("sichtbar"))),
+		attributes.value(stsNAME).toString(),
+		attributes.value(QStringLiteral("von")).toString(),
+		attributes.value(QStringLiteral("nach")).toString(),
+		attributes.value(QStringLiteral("gleis")).toString(),
+		attributes.value(QStringLiteral("plangleis")).toString()
+	};
+	
+	TrainEvent event = TrainEvent::RESPONSE;
+	
+	const QStringRef rEvent = attributes.value(stsEREIGNIS);
+	if (!rEvent.isNull())
 	{
 		auto isEvent = [&rEvent](const QString& eventName) ->bool {
 			return (rEvent.compare(eventName) == 0);
@@ -388,19 +387,21 @@ void QtSts::PluginCore::parseTrainDetails(const QXmlStreamAttributes& attributes
 
 		if (isEvent(stsEINFAHRT))
 		{
-			Q_EMIT incomingTrainReceived(zid, name, from, to, track, plannedTrack, delay, bOnTrack, bVisible);
+			event = TrainEvent::INBOUND;
 		}
 		else if (isEvent(stsANKUNFT))
 		{
-			Q_EMIT arrivingTrainReceived(zid, name, from, to, track, plannedTrack, delay, bOnTrack, bVisible);
+			event = TrainEvent::ARRIVING;
 		}
 		else if (isEvent(stsABFAHRT))
 		{
-			Q_EMIT departingTrainReceived(zid, name, from, to, track, plannedTrack, delay, bOnTrack, bVisible);
+			event = TrainEvent::DEPARTING;
 		}
 		else if (isEvent(stsAUSFAHRT))
 		{
-			Q_EMIT outgoingTrainReceived(zid, name, from, to, track, plannedTrack, delay, bOnTrack, bVisible);
+			event = TrainEvent::OUTBOUND;
 		}
 	}
+
+	Q_EMIT trainDetailsReceived(train, event);
 }

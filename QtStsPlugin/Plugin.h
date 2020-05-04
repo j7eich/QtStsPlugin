@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QString>
 #include <QAbstractSocket>
-#include "TrainEventFlags.h"
+#include "Train.h"
 
 class QTcpSocket;
 
@@ -34,8 +34,6 @@ namespace QtSts {
 		Q_PROPERTY(bool stsConnected READ isConnected WRITE setConnected NOTIFY signalConnected)
 
 	public:
-		Q_FLAG(TrainEvents)
-
 		Plugin(const QString& pluginName,
 			const QString& pluginAuthor,
 			const QString& pluginVersion,
@@ -70,26 +68,7 @@ namespace QtSts {
 		void heatReceived(int heat);
 		void stitzReceived(int allgemein, int region);
 		void trainListReceived(const QList<QPair<int, QString>>& trainList);
-		void trainDetailsReceived(int trainId, const QString& name,
-			const QString& from, const QString& to,
-			const QString& track, const QString& plannedTrack,
-			int delay, bool onTrack, bool visible);
-		void incomingTrainReceived(int trainId, const QString& name,
-			const QString& from, const QString& to,
-			const QString& track, const QString& plannedTrack,
-			int delay, bool onTrack, bool visible);
-		void outgoingTrainReceived(int trainId, const QString& name,
-			const QString& from, const QString& to,
-			const QString& track, const QString& plannedTrack,
-			int delay, bool onTrack, bool visible);
-		void arrivingTrainReceived(int trainId, const QString& name,
-			const QString& from, const QString& to,
-			const QString& track, const QString& plannedTrack,
-			int delay, bool onTrack, bool visible);
-		void departingTrainReceived(int trainId, const QString& name,
-			const QString& from, const QString& to,
-			const QString& track, const QString& plannedTrack,
-			int delay, bool onTrack, bool visible);
+		void trainDetailsReceived(QtSts::Train train, QtSts::TrainEvent event);
 		void dataFromSts(const QByteArray& data);
 		void dataToSts(const QByteArray& data);
 
