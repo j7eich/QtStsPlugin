@@ -23,6 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <QPair>
 #include <memory>
 #include "Train.h"
+#include "Timetable.h"
 
 class QXmlStreamReader;
 class QXmlStreamAttributes;
@@ -77,6 +78,7 @@ namespace QtSts {
 		void stitzReceived(int allgemein, int region);
 		void trainListReceived(const QList<QPair<int, QString>>& trainList);
 		void trainDetailsReceived(QtSts::Train train, QtSts::TrainEvent event);
+		void timetableReceived(QtSts::Timetable timetable);
 
 	private:
 		void handleStartElement();
@@ -110,6 +112,7 @@ namespace QtSts {
 		int m_stitzAllgemein;
 		int m_stitzRegion;
 		TrainList m_trainList;
+		Timetable m_timetable;
 	};
 
 }

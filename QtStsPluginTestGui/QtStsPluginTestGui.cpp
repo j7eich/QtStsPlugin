@@ -82,6 +82,8 @@ void QtStsPluginTestGui::on_actionInstantiate_triggered()
 		Q_ASSERT(connection);
 		connection = QObject::connect(m_plugin, SIGNAL(trainDetailsReceived(QtSts::Train, QtSts::TrainEvent)), this, SLOT(on_trainDetailsReceived(QtSts::Train, QtSts::TrainEvent)));
 		Q_ASSERT(connection);
+		connection = QObject::connect(m_plugin, SIGNAL(timetableReceived(QtSts::Timetable)), this, SLOT(on_timetableReceived(QtSts::Timetable)));
+		Q_ASSERT(connection);
 		
 		ui->actionDestroy->setEnabled(true);
 		ui->actionSetConnection->setEnabled(true);
@@ -274,6 +276,23 @@ void QtStsPluginTestGui::on_trainDetailsReceived(QtSts::Train train, QtSts::Trai
 	log.append(QStringLiteral("\n\tonTrack=%1").arg(toString(train.onTrack)));
 	log.append(QStringLiteral("\n\tvisible=%1").arg(toString(train.visible)));
 	
+	ui->logText->append(log);
+}
+
+void QtStsPluginTestGui::on_timetableReceived(QtSts::Timetable timetable)
+{
+	QString log(tr("timetableReceived: timetable="));
+
+	log.append(QStringLiteral("\n\ttrainId=%1").arg(timetable.trainId));
+	for (auto entry : timetable.entries)
+	{
+		log.append(QStringLiteral("\n\t-\ttrack=\"%1\"").arg(entry.track));
+		log.append(QStringLiteral("\n\t\tplannedTrack=\"%1\"").arg(entry.plannedTrack));
+		log.append(QStringLiteral("\n\t\tarriving=\"%1\"").arg(entry.arriving));
+		log.append(QStringLiteral("\n\t\tdeparting=\"%1\"").arg(entry.departing));
+		log.append(QStringLiteral("\n\t\tflags=\"%1\"").arg(entry.flags));
+	}
+
 	ui->logText->append(log);
 }
 

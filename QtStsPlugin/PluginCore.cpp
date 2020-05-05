@@ -68,8 +68,10 @@ QtSts::PluginCore::PluginCore(const QString& pluginName,
 	, m_stitzAllgemein(0)
 	, m_stitzRegion(0)
 	, m_trainList()
+	, m_timetable()
 {
 	qRegisterMetaType<QtSts::Train>();
+	qRegisterMetaType<QtSts::Timetable>();
 }
 
 QtSts::PluginCore::~PluginCore() = default;
@@ -258,7 +260,8 @@ void QtSts::PluginCore::handleEndElement()
 	}
 	else if (nameIs(stsZUGFAHRPLAN))
 	{
-		qt_noop();
+		Q_EMIT timetableReceived(m_timetable);
+		m_timetable.clear();
 	}
 	else if (nameIs(stsSTATUS))
 	{
@@ -434,10 +437,17 @@ void QtSts::PluginCore::parseTrainDetails(const QXmlStreamAttributes& attributes
 
 void QtSts::PluginCore::parseTimetable(const QXmlStreamAttributes& attributes)
 {
-	qt_noop();
+	Q_ASSERT(m_timetable.trainId == 0);
+	Q_ASSERT(m_timetable.entries.isEmpty());
+	m_timetable.trainId = attributes.value(stsZID).toInt();
 }
 
 void QtSts::PluginCore::parseTimetableEntry(const QXmlStreamAttributes& attributes)
 {
-	qt_noop();
+	Q_ASSERT(m_timetable.trainId != 0);
+	m_timetable.entries.append({attributes.value(stsNAME).toString(),
+		attributes.value(QStringLiteral("plan")).toString(),
+		attributes.value(QStringLiteral("an")).toString(),
+		attributes.value(QStringLiteral("ab")).toString(),
+		attributes.value(QStringLiteral("flags")).toString(),});
 }

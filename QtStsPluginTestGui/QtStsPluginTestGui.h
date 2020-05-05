@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <QMainWindow>
 #include <memory>
 #include "../QtStsPlugin/Train.h"
+#include "../QtStsPlugin/Timetable.h"
 
 namespace Ui {
 	class QtStsPluginTestGuiClass;
@@ -58,7 +59,8 @@ public Q_SLOTS:
 	void on_heatReceived(int heat);
 	void on_stitzReceived(int allgemein, int region);
 	void on_trainListReceived(const QList<QPair<int, QString>>& trainList);
-	void on_trainDetailsReceived(QtSts::Train, QtSts::TrainEvent);
+	void on_trainDetailsReceived(QtSts::Train train, QtSts::TrainEvent event);
+	void on_timetableReceived(QtSts::Timetable timetable);
 
 private:
 	void addToCommunicationLog(const QByteArray& data, bool outgoing, bool scrollToEnd);

@@ -17,32 +17,32 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #pragma once
 
 #include <QString>
+#include <QVector>
 #include <QMetaType>
 
 namespace QtSts {
 
-	enum class TrainEvent
+	struct TimetableEntry
 	{
-		NONE      = 0b00000000,
-		INBOUND   = 0b00000001,
-		OUTBOUND  = 0b00000010,
-		ARRIVING  = 0b00000100,
-		DEPARTING = 0b00001000,
-		RESPONSE  = 0b10000000
-	};
-
-	struct Train
-	{
-		int id = 0;
-		int delay = 0;
-		bool onTrack = false;
-		bool visible = false;
-		QString name;
-		QString from;
-		QString to;
 		QString track;
 		QString plannedTrack;
+		QString arriving;
+		QString departing;
+		QString flags;
 	};
+
+	struct Timetable
+	{
+		int trainId = 0;
+		QVector<TimetableEntry> entries;
+
+		void clear() {
+			trainId = 0;
+			entries.clear();
+		}
+	};
+
 }
 
-Q_DECLARE_METATYPE(QtSts::Train)
+Q_DECLARE_METATYPE(QtSts::TimetableEntry)
+Q_DECLARE_METATYPE(QtSts::Timetable)

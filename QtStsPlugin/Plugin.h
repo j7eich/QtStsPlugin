@@ -21,6 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <QString>
 #include <QAbstractSocket>
 #include "Train.h"
+#include "Timetable.h"
 
 class QTcpSocket;
 
@@ -70,6 +71,7 @@ namespace QtSts {
 		void stitzReceived(int allgemein, int region);
 		void trainListReceived(const QList<QPair<int, QString>>& trainList);
 		void trainDetailsReceived(QtSts::Train train, QtSts::TrainEvent event);
+		void timetableReceived(QtSts::Timetable timetable);
 		void dataFromSts(const QByteArray& data);
 		void dataToSts(const QByteArray& data);
 
