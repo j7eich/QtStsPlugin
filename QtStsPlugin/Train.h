@@ -16,7 +16,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *****************************************************************************/
 #pragma once
 
-#include "qtstsplugin_global.h"
 #include <QString>
 #include <QMetaType>
 
@@ -32,7 +31,7 @@ namespace QtSts {
 		RESPONSE  = 0b10000000
 	};
 
-	class QTSTSPLUGIN_EXPORT Train
+	class Train
 	{
 	public:
 		int id = 0;

@@ -84,7 +84,6 @@
   <ItemGroup>
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="PluginCore.cpp" />
-    <ClCompile Include="Train.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Train.h" />
