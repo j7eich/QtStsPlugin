@@ -140,21 +140,29 @@ void QtStsPluginTestGui::on_actionSignalBoxInfo_triggered()
 
 void QtStsPluginTestGui::on_actionHeat_triggered()
 {
+	Q_ASSERT(m_plugin != nullptr);
+
 	m_plugin->requestHeat();
 }
 
 void QtStsPluginTestGui::on_actionStitz_triggered()
 {
+	Q_ASSERT(m_plugin != nullptr);
+
 	m_plugin->requestStitz();
 }
 
 void QtStsPluginTestGui::on_actionTrainList_triggered()
 {
+	Q_ASSERT(m_plugin != nullptr);
+
 	m_plugin->requestTrainList();
 }
 
 void QtStsPluginTestGui::on_actionTrainInfo_triggered()
 {
+	Q_ASSERT(m_plugin != nullptr);
+
 	bool ok = false;
 	const int trainId = QInputDialog::getInt(this, tr("Request Train Info"), tr("Train ID"), 0, -2147483647, 2147483647, 1, &ok);
 	if (ok)
