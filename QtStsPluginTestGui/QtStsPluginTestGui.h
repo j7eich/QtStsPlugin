@@ -47,6 +47,7 @@ public Q_SLOTS:
 	void on_actionStitz_triggered();
 	void on_actionTrainList_triggered();
 	void on_actionTrainInfo_triggered();
+	void on_actionTimetable_triggered();
 	void communicationFromSts(const QByteArray& data);
 	void communicationToSts(const QByteArray& data);
 

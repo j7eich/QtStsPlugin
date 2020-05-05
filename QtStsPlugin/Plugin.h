@@ -59,6 +59,7 @@ namespace QtSts {
 		void requestStitz();
 		void requestTrainList();
 		void requestTrainInfo(int trainId);
+		void requestTimeTable(int trainId);
 
 	Q_SIGNALS:
 		void signalConnected(bool connected);

@@ -92,6 +92,7 @@
     <addaction name="actionStitz"/>
     <addaction name="actionTrainList"/>
     <addaction name="actionTrainInfo"/>
+    <addaction name="actionTimetable"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -191,6 +192,11 @@
   <action name="actionTrainInfo">
    <property name="text">
     <string>Train &amp;Info...</string>
+   </property>
+  </action>
+  <action name="actionTimetable">
+   <property name="text">
+    <string>Timet&amp;able...</string>
    </property>
   </action>
  </widget>

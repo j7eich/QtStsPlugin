@@ -64,6 +64,7 @@ namespace QtSts {
 		void requestStitz();
 		void requestTrainList();
 		void requestTrainInfo(int trainId);
+		void requestTimeTable(int trainId);
 		void receivedFromSts(const QByteArray& data);
 
 	Q_SIGNALS:
@@ -89,6 +90,8 @@ namespace QtSts {
 		void parseStitz(const QXmlStreamAttributes& attributes);
 		void parseTrain(const QXmlStreamAttributes& attributes);
 		void parseTrainDetails(const QXmlStreamAttributes& attributes);
+		void parseTimetable(const QXmlStreamAttributes& attributes);
+		void parseTimetableEntry(const QXmlStreamAttributes& attributes);
 
 		std::unique_ptr<QXmlStreamReader> m_xmlReader;
 		QString m_pluginName;

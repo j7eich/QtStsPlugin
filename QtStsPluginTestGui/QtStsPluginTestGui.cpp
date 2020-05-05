@@ -171,6 +171,18 @@ void QtStsPluginTestGui::on_actionTrainInfo_triggered()
 	}
 }
 
+void QtStsPluginTestGui::on_actionTimetable_triggered()
+{
+	Q_ASSERT(m_plugin != nullptr);
+
+	bool ok = false;
+	const int trainId = QInputDialog::getInt(this, tr("Request Train Timetable"), tr("Train ID"), 0, -2147483647, 2147483647, 1, &ok);
+	if (ok)
+	{
+		m_plugin->requestTimeTable(trainId);
+	}
+}
+
 void QtStsPluginTestGui::communicationFromSts(const QByteArray& data)
 {
 	addToCommunicationLog(data, false, true);

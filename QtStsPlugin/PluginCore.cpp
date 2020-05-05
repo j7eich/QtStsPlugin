@@ -28,6 +28,7 @@ namespace QtSts {
 	static const QString stsAUSFAHRT("ausfahrt");
 	static const QString stsEINFAHRT("einfahrt");
 	static const QString stsEREIGNIS(QStringLiteral("ereignis"));
+	static const QString stsGLEIS("gleis");
 	static const QString stsHITZE(QStringLiteral("hitze"));
 	static const QString stsNAME(QStringLiteral("name"));
 	static const QString stsSENDER(QStringLiteral("sender"));
@@ -37,6 +38,7 @@ namespace QtSts {
 	static const QString stsZID(QStringLiteral("zid"));
 	static const QString stsZUG(QStringLiteral("zug"));
 	static const QString stsZUGDETAILS("zugdetails");
+	static const QString stsZUGFAHRPLAN("zugfahrplan");
 	static const QString stsZUGLISTE(QStringLiteral("zugliste"));
 
 	static constexpr int stsSTATUS_NOT_REGISTERED = 300;
@@ -118,6 +120,18 @@ void QtSts::PluginCore::requestTrainInfo(int trainId)
 	Q_EMIT sendToSts(data);
 }
 
+void QtSts::PluginCore::requestTimeTable(int trainId)
+{
+	QByteArray data;
+	QXmlStreamWriter xml(&data);
+	xml.writeStartElement(stsZUGFAHRPLAN);
+	xml.writeAttribute(stsZID, QString::number(trainId));
+	xml.writeEndElement();
+	xml.writeEndDocument();
+
+	Q_EMIT sendToSts(data);
+}
+
 void QtSts::PluginCore::receivedFromSts(const QByteArray& data)
 {
 	m_xmlReader->addData(data);
@@ -180,6 +194,14 @@ void QtSts::PluginCore::handleStartElement()
 	{
 		parseTrainDetails(attributes);
 	}
+	else if (nameIs(stsGLEIS))
+	{
+		parseTimetableEntry(attributes);
+	}
+	else if (nameIs(stsZUGFAHRPLAN))
+	{
+		parseTimetable(attributes);
+	}
 	else if (nameIs(stsZUGLISTE))
 	{
 		m_trainList.clear();
@@ -233,6 +255,10 @@ void QtSts::PluginCore::handleEndElement()
 	if (nameIs(stsZUGLISTE))
 	{
 		Q_EMIT trainListReceived(m_trainList);
+	}
+	else if (nameIs(stsZUGFAHRPLAN))
+	{
+		qt_noop();
 	}
 	else if (nameIs(stsSTATUS))
 	{
@@ -404,4 +430,14 @@ void QtSts::PluginCore::parseTrainDetails(const QXmlStreamAttributes& attributes
 	}
 
 	Q_EMIT trainDetailsReceived(train, event);
+}
+
+void QtSts::PluginCore::parseTimetable(const QXmlStreamAttributes& attributes)
+{
+	qt_noop();
+}
+
+void QtSts::PluginCore::parseTimetableEntry(const QXmlStreamAttributes& attributes)
+{
+	qt_noop();
 }
