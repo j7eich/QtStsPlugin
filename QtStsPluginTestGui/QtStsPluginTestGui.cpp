@@ -24,6 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "../QtStsPlugin/Plugin.h"
 #include "DialogPlugin.h"
 #include "DialogConnection.h"
+#include "DialogEvent.h"
 
 QtStsPluginTestGui::QtStsPluginTestGui(QWidget *parent)
 	: QMainWindow(parent)
@@ -185,6 +186,19 @@ void QtStsPluginTestGui::on_actionTimetable_triggered()
 	}
 }
 
+void QtStsPluginTestGui::on_actionRegisterEvent_triggered()
+{
+	Q_ASSERT(m_plugin != nullptr);
+
+	DialogEvent dialog;
+
+	const int result = dialog.exec();
+	if (result == QDialog::Accepted)
+	{
+		m_plugin->registerEvent(dialog.trainId(), dialog.trainEvent());
+	}
+}
+
 void QtStsPluginTestGui::communicationFromSts(const QByteArray& data)
 {
 	addToCommunicationLog(data, false, true);
@@ -284,7 +298,7 @@ void QtStsPluginTestGui::on_timetableReceived(QtSts::Timetable timetable)
 	QString log(tr("timetableReceived: timetable="));
 
 	log.append(QStringLiteral("\n\ttrainId=%1").arg(timetable.trainId));
-	for (auto entry : timetable.entries)
+	for (const auto& entry : timetable.entries)
 	{
 		log.append(QStringLiteral("\n\t-\ttrack=\"%1\"").arg(entry.track));
 		log.append(QStringLiteral("\n\t\tplannedTrack=\"%1\"").arg(entry.plannedTrack));

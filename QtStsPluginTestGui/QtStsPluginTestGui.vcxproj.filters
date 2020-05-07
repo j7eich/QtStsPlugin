@@ -37,12 +37,21 @@
     <ClCompile Include="DialogConnection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DialogEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtStsPluginTestGui.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="DialogPlugin.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DialogConnection.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DialogEvent.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -56,15 +65,13 @@
     <QtUic Include="DialogConnection.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="DialogEvent.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="QtStsPluginTestGui.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="DialogConnection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

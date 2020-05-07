@@ -22,13 +22,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <QTime>
 
 namespace QtSts {
-	static const QString stsABFAHRT("abfahrt");
-	static const QString stsANKUNFT("ankunft");
+	static const QString stsABFAHRT(QStringLiteral("abfahrt"));
+	static const QString stsANKUNFT(QStringLiteral("ankunft"));
 	static const QString stsANLAGENINFO(QStringLiteral("anlageninfo"));
-	static const QString stsAUSFAHRT("ausfahrt");
-	static const QString stsEINFAHRT("einfahrt");
+	static const QString stsART(QStringLiteral("art"));
+	static const QString stsAUSFAHRT(QStringLiteral("ausfahrt"));
+	static const QString stsEINFAHRT(QStringLiteral("einfahrt"));
 	static const QString stsEREIGNIS(QStringLiteral("ereignis"));
-	static const QString stsGLEIS("gleis");
+	static const QString stsGLEIS(QStringLiteral("gleis"));
 	static const QString stsHITZE(QStringLiteral("hitze"));
 	static const QString stsNAME(QStringLiteral("name"));
 	static const QString stsSENDER(QStringLiteral("sender"));
@@ -37,8 +38,8 @@ namespace QtSts {
 	static const QString stsSTITZ(QStringLiteral("stitz"));
 	static const QString stsZID(QStringLiteral("zid"));
 	static const QString stsZUG(QStringLiteral("zug"));
-	static const QString stsZUGDETAILS("zugdetails");
-	static const QString stsZUGFAHRPLAN("zugfahrplan");
+	static const QString stsZUGDETAILS(QStringLiteral("zugdetails"));
+	static const QString stsZUGFAHRPLAN(QStringLiteral("zugfahrplan"));
 	static const QString stsZUGLISTE(QStringLiteral("zugliste"));
 
 	static constexpr int stsSTATUS_NOT_REGISTERED = 300;
@@ -128,6 +129,39 @@ void QtSts::PluginCore::requestTimeTable(int trainId)
 	QXmlStreamWriter xml(&data);
 	xml.writeStartElement(stsZUGFAHRPLAN);
 	xml.writeAttribute(stsZID, QString::number(trainId));
+	xml.writeEndElement();
+	xml.writeEndDocument();
+
+	Q_EMIT sendToSts(data);
+}
+
+void QtSts::PluginCore::registerEvent(int trainId, QtSts::TrainEvent event)
+{
+	QString sEvent;
+
+	switch (event)
+	{
+	case QtSts::TrainEvent::ARRIVING:
+		sEvent = stsANKUNFT;
+		break;
+	case QtSts::TrainEvent::DEPARTING:
+		sEvent = stsABFAHRT;
+		break;
+	case QtSts::TrainEvent::INBOUND:
+		sEvent = stsEINFAHRT;
+		break;
+	case QtSts::TrainEvent::OUTBOUND:
+		sEvent = stsAUSFAHRT;
+		break;
+	default:
+		return;
+	}
+
+	QByteArray data;
+	QXmlStreamWriter xml(&data);
+	xml.writeStartElement(stsEREIGNIS);
+	xml.writeAttribute(stsZID, QString::number(trainId));
+	xml.writeAttribute(stsART, sEvent);
 	xml.writeEndElement();
 	xml.writeEndDocument();
 

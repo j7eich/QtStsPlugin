@@ -61,6 +61,7 @@ namespace QtSts {
 		void requestTrainList();
 		void requestTrainInfo(int trainId);
 		void requestTimeTable(int trainId);
+		void registerEvent(int trainId, QtSts::TrainEvent event);
 
 	Q_SIGNALS:
 		void signalConnected(bool connected);
