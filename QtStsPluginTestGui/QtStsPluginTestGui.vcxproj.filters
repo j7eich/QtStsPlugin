@@ -40,6 +40,9 @@
     <ClCompile Include="DialogEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DialogAbout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtStsPluginTestGui.h">
@@ -54,6 +57,9 @@
     <QtMoc Include="DialogEvent.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="DialogAbout.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtStsPluginTestGui.ui">
@@ -66,6 +72,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="DialogEvent.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="DialogAbout.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

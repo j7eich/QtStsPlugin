@@ -25,9 +25,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "DialogPlugin.h"
 #include "DialogConnection.h"
 #include "DialogEvent.h"
+#include "DialogAbout.h"
 
-QtStsPluginTestGui::QtStsPluginTestGui(QWidget *parent)
-	: QMainWindow(parent)
+QtStsPluginTestGui::QtStsPluginTestGui(QWidget* parent, Qt::WindowFlags flags)
+	: QMainWindow(parent, flags)
 	, ui(new Ui::QtStsPluginTestGuiClass)
 	, m_plugin(nullptr)
 {
@@ -197,6 +198,17 @@ void QtStsPluginTestGui::on_actionRegisterEvent_triggered()
 	{
 		m_plugin->registerEvent(dialog.trainId(), dialog.trainEvent());
 	}
+}
+
+void QtStsPluginTestGui::on_actionAbout_triggered()
+{
+	DialogAbout dialog;
+	dialog.exec();
+}
+
+void QtStsPluginTestGui::on_actionAboutQt_triggered()
+{
+	qApp->aboutQt();
 }
 
 void QtStsPluginTestGui::communicationFromSts(const QByteArray& data)

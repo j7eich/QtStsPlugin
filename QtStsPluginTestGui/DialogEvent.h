@@ -29,7 +29,7 @@ class DialogEvent : public QDialog
 	Q_OBJECT
 
 public:
-	DialogEvent(QWidget* parent = nullptr);
+	DialogEvent(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
 	~DialogEvent() override;
 
 	int trainId() const;

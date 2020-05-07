@@ -33,7 +33,7 @@ class DialogConnection : public QDialog
 	Q_PROPERTY(QAbstractSocket::NetworkLayerProtocol protocol READ protocol WRITE setProtocol)
 
 public:
-	DialogConnection(QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
+	DialogConnection(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
 	~DialogConnection() override;
 
 	QString hostname() const;

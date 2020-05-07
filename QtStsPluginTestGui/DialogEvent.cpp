@@ -17,8 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "DialogEvent.h"
 #include "ui_DialogEvent.h"
 
-DialogEvent::DialogEvent(QWidget *parent)
-	: QDialog(parent)
+DialogEvent::DialogEvent(QWidget* parent, Qt::WindowFlags flags)
+	: QDialog(parent, flags)
 	, ui(new Ui::DialogEvent)
 {
 	ui->setupUi(this);

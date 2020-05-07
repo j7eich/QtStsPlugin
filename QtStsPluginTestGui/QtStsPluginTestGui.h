@@ -34,7 +34,7 @@ class QtStsPluginTestGui : public QMainWindow
 	Q_OBJECT
 
 public:
-	QtStsPluginTestGui(QWidget* parent = nullptr);
+	QtStsPluginTestGui(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
 	~QtStsPluginTestGui() override;
 
 public Q_SLOTS:
@@ -50,6 +50,8 @@ public Q_SLOTS:
 	void on_actionTrainInfo_triggered();
 	void on_actionTimetable_triggered();
 	void on_actionRegisterEvent_triggered();
+	void on_actionAbout_triggered();
+	void on_actionAboutQt_triggered();
 	void communicationFromSts(const QByteArray& data);
 	void communicationToSts(const QByteArray& data);
 
