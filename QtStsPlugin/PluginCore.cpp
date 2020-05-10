@@ -204,8 +204,11 @@ void QtSts::PluginCore::receivedFromSts(const QByteArray& data)
 			m_signalBoxName.clear();
 			break;
 		case QXmlStreamReader::Invalid:
-			qt_noop();
-			//handleInvalid();
+			if (!m_xmlReader->atEnd())
+			{
+				// Code 599 is not defined by STS Plugin spec. We use it to transport parsing errors:
+				Q_EMIT statusMessageReceived(599, m_xmlReader->errorString());
+			}
 			break;
 		default:
 			break;
