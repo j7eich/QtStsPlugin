@@ -36,7 +36,7 @@ QtSts::Plugin::Plugin(const QString& pluginName,
 {
 	m_socket = new QTcpSocket(this);
 	QObject::connect(m_socket, SIGNAL(readyRead()), this, SLOT(on_readyRead()));
-	QObject::connect(m_socket, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)), this, SLOT(on_socketStateChanged(QAbstractSocket::SocketState)));
+	QObject::connect(m_socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(on_socketStateChanged(QAbstractSocket::SocketState)));
 
 	m_core = new PluginCore(pluginName, pluginAuthor, pluginVersion, pluginText, this);
 	QObject::connect(m_core, SIGNAL(sendToSts(const QByteArray&)), this, SLOT(sendToSocket(const QByteArray&)));
@@ -62,6 +62,7 @@ QtSts::Plugin::Plugin(const QString& pluginName,
 
 QtSts::Plugin::~Plugin()
 {
+	stsDisconnect();
 	m_core = nullptr;
 	m_socket = nullptr;
 }
@@ -153,12 +154,12 @@ void QtSts::Plugin::on_socketStateChanged(QAbstractSocket::SocketState state)
 	case QAbstractSocket::UnconnectedState:
 		if (m_core->isStreamActive())
 		{
-			m_core->receivedFromSts(QByteArrayLiteral("</sts:stream>\n"));
+			m_core->receivedFromSts(QByteArrayLiteral("</stream>\n"));
 		}
 		break;
 	case QAbstractSocket::ConnectedState:
 		Q_ASSERT(m_core->isStreamActive() == false);
-		m_core->receivedFromSts(QByteArrayLiteral("<sts:stream>\n"));
+		m_core->receivedFromSts(QByteArrayLiteral("<stream>\n"));
 		break;
 	default:
 		break;
