@@ -229,7 +229,7 @@ void QtSts::PluginCore::handleStartElement()
 	{
 		parseTrain(attributes);
 	}
-	else if (nameIs(stsZUGDETAILS))
+	else if (nameIs(stsZUGDETAILS) || nameIs(stsEREIGNIS))
 	{
 		parseTrainDetails(attributes);
 	}
@@ -444,7 +444,7 @@ void QtSts::PluginCore::parseTrainDetails(const QXmlStreamAttributes& attributes
 	
 	TrainEvent event = TrainEvent::RESPONSE;
 	
-	const QStringRef rEvent = attributes.value(stsEREIGNIS);
+	const QStringRef rEvent = attributes.value(stsART);
 	if (!rEvent.isNull())
 	{
 		auto isEvent = [&rEvent](const QString& eventName) ->bool {
