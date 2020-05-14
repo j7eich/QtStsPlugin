@@ -86,6 +86,7 @@
     <ClCompile Include="PluginCore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Timetable.h" />
     <ClInclude Include="Train.h" />
     <QtMoc Include="Plugin.h" />
@@ -93,6 +94,7 @@
     <ClInclude Include="qtstsplugin_global.h" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="QtStsPlugin.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
