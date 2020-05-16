@@ -55,7 +55,7 @@ public Q_SLOTS:
 	void communicationFromSts(const QByteArray& data);
 	void communicationToSts(const QByteArray& data);
 
-	void on_signalConnected(bool connected);
+	void on_stsConnected(bool connected);
 	void on_statusMessageReceived(int code, const QString& text);
 	void on_timeReceived(int offset, int rtt);
 	void on_signalBoxInfoReceived(int simbuild, int aid, const QString& name);

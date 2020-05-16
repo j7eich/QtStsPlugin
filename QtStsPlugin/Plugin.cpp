@@ -35,11 +35,16 @@ QtSts::Plugin::Plugin(const QString& pluginName,
 	, m_ipProtocol(QAbstractSocket::AnyIPProtocol)
 {
 	m_socket = new QTcpSocket(this);
-	QObject::connect(m_socket, SIGNAL(readyRead()), this, SLOT(on_readyRead()));
-	QObject::connect(m_socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(on_socketStateChanged(QAbstractSocket::SocketState)));
+	auto c = QObject::connect(m_socket, SIGNAL(readyRead()), this, SLOT(on_readyRead()));
+	Q_ASSERT(c);
+	c = QObject::connect(m_socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(on_socketStateChanged(QAbstractSocket::SocketState)));
+	Q_ASSERT(c);
 
 	m_core = new PluginCore(pluginName, pluginAuthor, pluginVersion, pluginText, this);
-	QObject::connect(m_core, SIGNAL(sendToSts(const QByteArray&)), this, SLOT(sendToSocket(const QByteArray&)));
+	c = QObject::connect(m_core, SIGNAL(sendToSts(const QByteArray&)), this, SLOT(sendToSocket(const QByteArray&)));
+	Q_ASSERT(c);
+	c = QObject::connect(m_core, SIGNAL(registered()), this, SLOT(on_coreRegistered()));
+	Q_ASSERT(c);
 
 	auto metaCore = m_core->metaObject();
 	auto metaThis = metaObject();
@@ -156,6 +161,8 @@ void QtSts::Plugin::on_socketStateChanged(QAbstractSocket::SocketState state)
 		{
 			m_core->receivedFromSts(QByteArrayLiteral("</stream>\n"));
 		}
+		Q_EMIT stsConnected(false);
+		Q_EMIT signalDisconnected();
 		break;
 	case QAbstractSocket::ConnectedState:
 		Q_ASSERT(m_core->isStreamActive() == false);
@@ -164,6 +171,12 @@ void QtSts::Plugin::on_socketStateChanged(QAbstractSocket::SocketState state)
 	default:
 		break;
 	}
+}
+
+void QtSts::Plugin::on_coreRegistered()
+{
+	Q_EMIT stsConnected(true);
+	Q_EMIT signalConnected();
 }
 
 void QtSts::Plugin::sendToSocket(const QByteArray& data)

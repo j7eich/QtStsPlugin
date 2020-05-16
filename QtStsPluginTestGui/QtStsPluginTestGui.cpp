@@ -68,7 +68,7 @@ void QtStsPluginTestGui::on_actionInstantiate_triggered()
 		Q_ASSERT(connection);
 		connection = QObject::connect(m_plugin, SIGNAL(dataFromSts(const QByteArray&)), this, SLOT(communicationFromSts(const QByteArray&)));
 		Q_ASSERT(connection);
-		connection = QObject::connect(m_plugin, SIGNAL(signalConnected(bool)), this, SLOT(on_signalConnected(bool)));
+		connection = QObject::connect(m_plugin, SIGNAL(stsConnected(bool)), this, SLOT(on_stsConnected(bool)));
 		Q_ASSERT(connection);
 		connection = QObject::connect(m_plugin, SIGNAL(statusMessageReceived(int, const QString&)), this, SLOT(on_statusMessageReceived(int, const QString&)));
 		Q_ASSERT(connection);
@@ -221,9 +221,9 @@ void QtStsPluginTestGui::communicationToSts(const QByteArray& data)
 	addToCommunicationLog(data, true, true);
 }
 
-void QtStsPluginTestGui::on_signalConnected(bool connected)
+void QtStsPluginTestGui::on_stsConnected(bool connected)
 {
-	ui->logText->append(tr("signalConnected: connected=%1").arg(connected));
+	ui->logText->append(tr("signalConnected: connected=").append(connected ? QStringLiteral("TRUE") : QStringLiteral("FALSE")));
 }
 
 void QtStsPluginTestGui::on_statusMessageReceived(int code, const QString& text)

@@ -32,7 +32,7 @@ namespace QtSts {
 	class QTSTSPLUGIN_EXPORT Plugin : public QObject
 	{
 		Q_OBJECT
-		Q_PROPERTY(bool stsConnected READ isConnected WRITE setConnected NOTIFY signalConnected)
+		Q_PROPERTY(bool stsConnected READ isConnected WRITE setConnected NOTIFY stsConnected)
 
 	public:
 		Plugin(const QString& pluginName,
@@ -64,7 +64,9 @@ namespace QtSts {
 		void registerEvent(int trainId, QtSts::TrainEvent event);
 
 	Q_SIGNALS:
-		void signalConnected(bool connected);
+		void stsConnected(bool connected);
+		void signalConnected();
+		void signalDisconnected();
 		void statusMessageReceived(int code, const QString& text);
 		void timeReceived(int offset, int rtt);
 		void signalBoxInfoReceived(int simbuild, int aid, const QString& name);
@@ -79,6 +81,7 @@ namespace QtSts {
 	private Q_SLOTS:
 		void on_readyRead();
 		void on_socketStateChanged(QAbstractSocket::SocketState state);
+		void on_coreRegistered();
 		void sendToSocket(const QByteArray& data);
 
 	private:
