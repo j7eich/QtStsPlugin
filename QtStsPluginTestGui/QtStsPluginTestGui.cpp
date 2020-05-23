@@ -211,14 +211,14 @@ void QtStsPluginTestGui::on_actionAboutQt_triggered()
 	qApp->aboutQt();
 }
 
-void QtStsPluginTestGui::communicationFromSts(const QByteArray& data)
+void QtStsPluginTestGui::communicationFromSts(const QByteArray& dataFromSts)
 {
-	addToCommunicationLog(data, false, true);
+	addToCommunicationLog(dataFromSts, false, true);
 }
 
-void QtStsPluginTestGui::communicationToSts(const QByteArray& data)
+void QtStsPluginTestGui::communicationToSts(const QByteArray& dataToSts)
 {
-	addToCommunicationLog(data, true, true);
+	addToCommunicationLog(dataToSts, true, true);
 }
 
 void QtStsPluginTestGui::on_stsConnected(bool connected)
@@ -322,11 +322,11 @@ void QtStsPluginTestGui::on_timetableReceived(QtSts::Timetable timetable)
 	ui->logText->append(log);
 }
 
-void QtStsPluginTestGui::addToCommunicationLog(const QByteArray& data, bool outgoing, bool scrollToEnd)
+void QtStsPluginTestGui::addToCommunicationLog(const QByteArray& logData, bool outgoing, bool scrollToEnd)
 {
 	QString sHtml(QStringLiteral("<p style=\"color:"));
 	sHtml.append(outgoing ? QStringLiteral("blue") : QStringLiteral("red"));
-	sHtml.append(QStringLiteral("\">")).append(QString(data).toHtmlEscaped());
+	sHtml.append(QStringLiteral("\">")).append(QString(logData).toHtmlEscaped());
 	sHtml.append(QStringLiteral("</p><br />"));
 	
 	auto cursor = ui->communicationText->textCursor();

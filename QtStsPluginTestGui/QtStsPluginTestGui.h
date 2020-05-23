@@ -52,8 +52,8 @@ public Q_SLOTS:
 	void on_actionRegisterEvent_triggered();
 	void on_actionAbout_triggered();
 	void on_actionAboutQt_triggered();
-	void communicationFromSts(const QByteArray& data);
-	void communicationToSts(const QByteArray& data);
+	void communicationFromSts(const QByteArray& dataFromSts);
+	void communicationToSts(const QByteArray& dataToSts);
 
 	void on_stsConnected(bool connected);
 	void on_statusMessageReceived(int code, const QString& text);
@@ -66,7 +66,7 @@ public Q_SLOTS:
 	void on_timetableReceived(QtSts::Timetable timetable);
 
 private:
-	void addToCommunicationLog(const QByteArray& data, bool outgoing, bool scrollToEnd);
+	void addToCommunicationLog(const QByteArray& logData, bool outgoing, bool scrollToEnd);
 
 	std::unique_ptr<Ui::QtStsPluginTestGuiClass> ui;
 	QtSts::Plugin* m_plugin;
